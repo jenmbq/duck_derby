@@ -1,4 +1,5 @@
-duck_derby
+#YESS Duck Derby   
+### #TeamDuck Contact Information
 ==========
 
 Tyler Bell   
@@ -21,11 +22,10 @@ Ken Block
 kennethblock@gmail.com   
 515.230.1136
 
-Ravi K M
-ravikiran1906@gmail.com
-952.456.1730
+Ravi K M   
+ravikiran1906@gmail.com   
+952.456.1730   
 
-
-Eugen Burianov
-eugenburianov@gmail.com
-641-455-1840
+Eugen Burianov   
+eugenburianov@gmail.com   
+641-455-1840   
