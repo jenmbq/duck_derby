@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Duck Derby</title>
+    <script type="text/javascript" src="js/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+    Duck = function(){
+        this.x = game.world.randomX;
+        this.y = game.world.randomY;
+        this.minSpeed = -25;
+        this.maxSpeed = 25;
+        this.vx = Math.random()*(this.maxSpeed - this.minSpeed+1)-this.minSpeed;
+        this.vy = Math.random()*(this.maxSpeed - this.minSpeed+1)-this.minSpeed;
+
+        this.duck = game.add.sprite(this.x,this.y,"duck");
+        this.duck.anchor.setTo(0.5, 0.5);
+        this.duck.inputEnabled = true;
+        this.duck.input.enableDrag(false, true);
+        game.physics.enable(this.duck, Phaser.Physics.ARCADE);
+        this.duck.body.collideWorldBounds = true;
+        this.duck.body.bounce.setTo(1, 1);
+        this.duck.body.velocity.x = this.vx;
+        this.duck.body.velocity.y = this.vy;
+        this.duck.body.immovable = true;
+        this.duck.events.onInputDown.add(listener, this);
+
+    };
+
+    var game = new Phaser.Game(640, 960, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    var numOfDucks = 10;
+    var pond;
+    var ducks;
+    var quack;
+
+    function preload() {
+        game.load.image('duck', 'img/duck.png');
+        game.load.audio('quack', 'audio/quack.wav');
+    }
+
+    function create() {
+        var graphics = game.add.graphics(0, 0);
+        game.stage.backgroundColor = "#4C8F00";
+        quack = game.add.audio('quack');
+        // draw a circle
+        graphics.lineStyle(0);
+        graphics.beginFill(0x8CF2FF, 0.5);
+        graphics.drawCircle(470, 200, 100);
+
+        ducks = [];
+        for (var i=0; i<numOfDucks; i++) {
+            ducks.push( new Duck() );
+        }
+    }
+
+    function update() {
+        
+    }
+
+    function listener(){
+        quack.play();
+    }
+
+
+</script>
+
+</body>
+</html>
