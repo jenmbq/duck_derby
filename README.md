@@ -24,3 +24,6 @@ kennethblock@gmail.com
 Eugen Burianov   
 eugenburianov@gmail.com   
 641-455-1840   
+
+Draft assets:
+https://github.com/jenmarks-wf/duck_derby/wiki/Storyline-and-assets-workplace
