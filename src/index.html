@@ -32,6 +32,7 @@
             this.duck.body.immovable = true;
             this.duck.scale.x=0.4;
             this.duck.scale.y=0.4;
+            this.duck.score=0;
             var self=this;
             this.duck.touchDown = function(){
                 quack.play();
@@ -44,20 +45,19 @@
             };
             this.duck.events.onInputDown.add(self.duck.touchDown, this);
             this.duck.events.onInputUp.add(self.duck.touchUp, this);
-
-
         };
 
         var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
         var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
-        var numOfDucks = 50;
+        var numOfDucks = 10;
         var pond;
         var ducks;
         var quack;
         var score = 0;
-        var time = 60;
+        var roundScore = 0;
+        var time = 30;
         var scoreText = "Score: " + score;
         var timeText = "Time: " + time;
         var timer = new Phaser.Timer(game);
@@ -88,12 +88,22 @@
         }
 
         function duckScore() {
-            score++;
-            scoreText.setText("Score: " + score);
-            if (score == numOfDucks) {
-                scoreText.setText("You Win!");
-                game.stage.backgroundColor = "#FAFAFA";
+            roundScore = 0;
+            for(var i=0;i<numOfDucks;i++) {
+                roundScore += ducks[i].duck.score;
             }
+            roundScore *= 10;
+            scoreText.setText("Score: " + roundScore);
+            if (roundScore / 10 == numOfDucks) {
+                scoreText.setText("You Win!");
+                gameEnd();
+            }
+        }
+
+        function gameEnd() {
+            score += roundScore;
+            game.stage.backgroundColor = "#FAFAFA";
+            timer.stop();
         }
 
         function setupTextBar() {
@@ -105,7 +115,6 @@
             timer.loop(1000, updateTimeCounter, this);
             timer.start();
             timeText = game.add.text(w-200, 0, timeText, style);
-
         }
 
         function updateTimeCounter() {
@@ -113,7 +122,7 @@
             timeText.setText("Time: " + time);
             if (time <= 0) {
                 timeText.setText("Time Up!");
-                game.stage.backgroundColor = "#FAFAFA";
+                gameEnd();
             }
         }
 
@@ -124,9 +133,14 @@
                 var y = ducky.duck.position.y;
                 var center_x = pondLocation[0];
                 var center_y = pondLocation[1];
-                var radius = pondRadius + 20;//duck width added
+                var radius = pondRadius + 20; //duck width added
 
                 if((x - center_x)*(x - center_x) + (y - center_y) * (y - center_y)  < radius * radius){
+                    if ((x - center_x)*(x - center_x) + (y - center_y) * (y - center_y)  < (radius - 5) * (radius - 5)){
+                        ducky.duck.body.velocity.x *= 0;
+                        ducky.duck.body.velocity.y *= 0;
+                        ducky.duck.score = 1;
+                    }
                     ducky.duck.body.velocity.x *= -1;
                     ducky.duck.body.velocity.y *= -1;
                 } else {
