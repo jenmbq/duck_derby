@@ -1,6 +1,5 @@
 #YESS Duck Derby   
 ### #TeamDuck Contact Information
-==========
 
 Tyler Bell   
 bell.tyler@me.com   
