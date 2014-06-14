@@ -23,7 +23,9 @@ Duck = function(){
 
     var self = this;
     this.duck.touchDown = function(){
-        quack.play();
+        if (soundOn) {
+            quack.play();
+        }
         self.duck.body.velocity.x = 0;
         self.duck.body.velocity.y = 0;
         self.duck.scale.x = duckScalePickedUp;
@@ -61,16 +63,19 @@ var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
+
+var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
 var topLeftText = "Level " + level + " Score: " + roundScore;
 
 function preload() {
     game.load.image('duck', 'img/duck.png');
+    game.load.image('soundOn', 'img/sound.png');
     game.load.audio('quack', 'audio/quack.wav');
 }
 
 function create() {
     setupLevel();
-    setupTextBar();
+    setupTopBar();
     initPond();
     game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
@@ -117,9 +122,11 @@ function render() {
     }
 }
 
-function setupTextBar() {
+function setupTopBar() {
+    var soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
+    soundButton.scale.setTo(0.4, 0.4);
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
-    topLeftText = game.add.text(0, 0, topLeftText, style);
+    topLeftText = game.add.text(soundButton.width, 0, topLeftText, style);
 
     //  Create Countdown Timer
     timer = game.time.create(false);
@@ -276,8 +283,14 @@ function removeIfAnyExtraneousDivs() {
 	}
 }
 
-function collisionHandler(obj1, obj2){
-    quack.play();
+function toggleSound() {
+    soundOn = !soundOn;
+    localStorage.setItem("duckDerbySoundOn", soundOn);
+}
 
+function collisionHandler(obj1, obj2){
+    if (soundOn) {
+        quack.play();
+    }
 }
 
