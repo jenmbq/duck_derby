@@ -51,12 +51,12 @@ var pond;
 var ducks;
 var quack;
 var roundScore = 0;
-var time = 20;
 var continueGame = true;
 var duckVelocity = 45;
 var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
+var time = 20;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
@@ -69,8 +69,8 @@ function preload() {
 }
 
 function create() {
-    setupTextBar();
     setupLevel();
+    setupTextBar();
     initPond();
     game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
@@ -89,7 +89,7 @@ function update() {
     }
 }
 
-function render(){
+function render() {
     for(var i=0;i<numOfDucks;i++){
         var ducky = ducks[i];
         var x = ducky.duck.position.x;
@@ -129,11 +129,13 @@ function setupTextBar() {
 }
 
 function setupLevel() {
-    //{
-    //    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
-    //    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
-    //}; //levels aren't implemented yet
-    numOfDucks = 10;
+    numOfDucks = level;
+    duckVelocity = 45 + (level * 3);
+    pondRadius = 100 - (level * 3);
+    time = 20 - level;
+    if (level > 10) {
+        time = 10;
+    }
 }
 
 function initPond()
@@ -225,14 +227,14 @@ function showOverlay(overlayType) {
 
     var message_div = document.createElement("div");
     message_div.setAttribute("id", "mdiv");
-    message_div.setAttribute("class", "center");
+    message_div.setAttribute("class", "nextCenter");
     overlay.appendChild(message_div);
 
     var actionButton = document.createElement("input");
     actionButton.setAttribute("type", "button");
 
     actionButton.setAttribute("id", "but");
-    actionButton.setAttribute("class", "btn center");
+    actionButton.setAttribute("class", "btn nextCenter");
     actionButton.setAttribute("style", "font-family: Arial");
     if (overlayType == "continue") {
         actionButton.setAttribute("onclick", "reload()");
