@@ -10,17 +10,18 @@ Duck = function(){
     this.duck.anchor.setTo(0.5, 0.5);
     this.duck.inputEnabled = true;
     this.duck.input.enableDrag(false, true);
-    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
-    this.duck.body.collideWorldBounds = true;
-    this.duck.body.bounce.setTo(1, 1.01);
-    this.duck.body.velocity.x = this.vx;
-    this.duck.body.velocity.y = this.vy;
-    this.duck.body.immovable = true;
     this.duck.scale.x=duckScale;
     this.duck.scale.y=duckScale;
     this.duck.scale.x = (Math.random()<.5) ? this.duck.scale.x : this.duck.scale.x * -1;
     this.duck.score=0;
-    var self=this;
+    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
+    this.duck.body.immovable = false;
+    this.duck.body.collideWorldBounds = true;
+    this.duck.body.bounce.setTo(1, 1.01);
+    this.duck.body.velocity.x = this.vx;
+    this.duck.body.velocity.y = this.vy;
+
+    var self = this;
     this.duck.touchDown = function(){
         quack.play();
         self.duck.body.velocity.x = 0;
@@ -74,13 +75,18 @@ function create() {
     game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
     ducks = [];
-    for (var i=0; i<numOfDucks; i++) {
-        ducks.push( new Duck() );
+    for (var i = 0; i < numOfDucks; i++) {
+        ducks.push(new Duck());
     }
 }
 
 function update() {
     game.input.onUp.addOnce(duckScore, this);
+    for(var j=0;j<numOfDucks;j++) {
+        for (var k = j + 1; k < numOfDucks; k++) {
+            game.physics.arcade.collide(ducks[j].duck, ducks[k].duck, collisionHandler, null, this);
+        }
+    }
 }
 
 function render(){
@@ -127,7 +133,7 @@ function setupLevel() {
     //    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
     //    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
     //}; //levels aren't implemented yet
-    numOfDucks = level;
+    numOfDucks = 10;
 }
 
 function initPond()
@@ -266,5 +272,10 @@ function removeIfAnyExtraneousDivs() {
 		}
 		document.body.removeChild(overlay);
 	}
+}
+
+function collisionHandler(obj1, obj2){
+    quack.play();
+
 }
 
