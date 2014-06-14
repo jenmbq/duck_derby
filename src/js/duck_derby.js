@@ -256,14 +256,14 @@ function showOverlay(overlayType) {
 
     var message_div = document.createElement("div");
     message_div.setAttribute("id", "mdiv");
-    message_div.setAttribute("class", "nextCenter");
+    message_div.setAttribute("class", "center");
     overlay.appendChild(message_div);
 
     var actionButton = document.createElement("input");
     actionButton.setAttribute("type", "button");
 
     actionButton.setAttribute("id", "but");
-    actionButton.setAttribute("class", "btn nextCenter");
+    actionButton.setAttribute("class", "btn center");
     actionButton.setAttribute("style", "font-family: Arial");
     if (overlayType == "continue") {
         actionButton.setAttribute("onclick", "reload()");
