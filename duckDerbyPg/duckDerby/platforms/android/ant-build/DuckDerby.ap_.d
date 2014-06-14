@@ -158,7 +158,11 @@
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/fonts/glyphicons-halflings-regular.ttf \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/fonts/glyphicons-halflings-regular.woff \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/img/duck.png \
+/Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/img/grass.png \
+/Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/img/sound.png \
+/Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/img/soundLayered.png \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/js/duck_derby.js \
+/Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/js/fastclick.js \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/js/hammer.js \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/js/index.js \
 /Users/eugeniuburianov/duck_derby/duckDerbyPg/duckDerby/platforms/android/assets/www/js/main.js \

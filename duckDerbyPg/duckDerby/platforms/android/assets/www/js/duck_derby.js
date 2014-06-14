@@ -1,7 +1,9 @@
-pondLocation = [190, 200];
-pondRadius = 100;
+window.addEventListener('load', function() {
+    FastClick.attach(document.body);
+}, false);
+
 Duck = function(){
-    this.x = 0;
+    this.x = game.world.randomX;
     this.y = game.world.randomY;
     this.minSpeed = -duckVelocity;
     this.maxSpeed = duckVelocity;
@@ -12,76 +14,125 @@ Duck = function(){
     this.duck.anchor.setTo(0.5, 0.5);
     this.duck.inputEnabled = true;
     this.duck.input.enableDrag(false, true);
-    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
-    this.duck.body.collideWorldBounds = true;
-    this.duck.body.bounce.setTo(1, 1.05);
-    this.duck.body.velocity.x = this.vx;
-    this.duck.body.velocity.y = this.vy;
-    this.duck.body.immovable = true;
     this.duck.scale.x=duckScale;
     this.duck.scale.y=duckScale;
+    this.duck.scale.x = (Math.random()<.5) ? this.duck.scale.x : this.duck.scale.x * -1;
     this.duck.score=0;
-    var self=this;
+    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
+    this.duck.body.immovable = false;
+    this.duck.body.collideWorldBounds = true;
+    this.duck.body.bounce.setTo(1, 1.01);
+    this.duck.body.velocity.x = this.vx;
+    this.duck.body.velocity.y = this.vy;
+
+    var self = this;
     this.duck.touchDown = function(){
-        quack.play();
+        if (soundOn) {
+            quack.play();
+        }
         self.duck.body.velocity.x = 0;
         self.duck.body.velocity.y = 0;
+        self.duck.scale.x = duckScalePickedUp;
+        self.duck.scale.y = duckScalePickedUp;
     };
     this.duck.touchUp = function(){
         self.duck.body.velocity.x = self.vx;
         self.duck.body.velocity.y = self.vy;
+        self.duck.scale.x = duckScale;
+        self.duck.scale.y = duckScale;
     };
     this.duck.events.onInputDown.add(self.duck.touchDown, this);
     this.duck.events.onInputUp.add(self.duck.touchUp, this);
 };
 
+
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+var h = Math.max(document.documentElement.clientHeight - 30, window.innerHeight - 30 || 0);
 
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+var pondLocation = [190, 200];
+var pondRadius = 90;
 var numOfDucks = 10;
 var pond;
 var ducks;
 var quack;
-var score = 0;
+var soundButton;
 var roundScore = 0;
-var time = 10;
+var continueGame = true;
 var duckVelocity = 45;
 var duckScale = 0.4;
+var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
-var scoreText = "Score: " + score;
-var timeText = "Time: " + time;
+var time = 20;
 var timer = new Phaser.Timer(game);
-var level = {
-    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
-    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
-}; //levels aren't implemented yet
+if (typeof(Storage) === "undefined") {
+    alert('This version of local web browser does not support local storage');
+}
+var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
+var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 
+var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
+var topLeftText = "Level " + level + " Score: " + roundScore;
+var recordScore = false;
+var facts = ["YESS stands for Youth Emergency Services and Shelter.",
+    "YESS helps children from newborn to age 17.",
+    "YESS provides emergency shelter, crisis intervention and counseling.",
+    "Adopt a duck.  Help a child.",
+    "YESS helps children whose home is not always a safe option.",
+    "YESS is open 24 hours a day, 7 days a week, 365 days a year.",
+    "YESS hosts a REAL duck derby every first Saturday in May."];
+var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
+    game.load.spritesheet('soundSprite','img/soundLayered.png',128,128,2);
+    game.load.image('soundOn', 'img/sound.png');
+    game.load.image('grass', 'img/grass.png');
     game.load.audio('quack', 'audio/quack.wav');
 }
 
 function create() {
-    setupTextBar();
-    pond = game.add.graphics(0, 0);
-    game.stage.backgroundColor = "#4C8F00";
-    quack = game.add.audio('quack');
-    pond.lineStyle(0);
-    pond.beginFill(0x8CF2FF, 0.5);
-    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
+    setupLevel();
+    setupTopBar();
+    initPond();
+    game.stage.backgroundColor = "#62B51F";
+    //  Our tiled scrolling background
+    grass = game.add.tileSprite(0, 0, w, h, 'grass');
 
+    game.world.bringToTop(pond);
+    game.world.bringToTop(soundButton);
+    quack = game.add.audio('quack');
     ducks = [];
-    for (var i=0; i<numOfDucks; i++) {
-        ducks.push( new Duck() );
+    for (var i = 0; i < numOfDucks;i++) {
+        var newDuck = new Duck();
+        //if duck is created within the pond then keep changing the position till the duck is not in the pond anymore.
+        while(isDuckWithinPond(newDuck)) {
+            newDuck.duck.position.x = game.world.randomX;
+            newDuck.duck.position.y = game.world.randomY;
+        }
+        ducks.push(newDuck);
     }
+}
+
+function isDuckWithinPond(newDuck) {
+    var x = newDuck.duck.position.x;
+    var y = newDuck.duck.position.y;
+    var center_x = pondLocation[0];
+    var center_y = pondLocation[1];
+    var groupRadius = pondRadius + 20; //duck width added
+    var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
+    return distanceFromPond < (groupRadius + 5) * (groupRadius + 5);
 }
 
 function update() {
     game.input.onUp.addOnce(duckScore, this);
+    for(var j=0;j<numOfDucks;j++) {
+        for (var k = j + 1; k < numOfDucks; k++) {
+            game.physics.arcade.collide(ducks[j].duck, ducks[k].duck, collisionHandler, null, this);
+        }
+    }
 }
 
-function render(){
+function render() {
     for(var i=0;i<numOfDucks;i++){
         var ducky = ducks[i];
         var x = ducky.duck.position.x;
@@ -90,8 +141,14 @@ function render(){
         var center_y = pondLocation[1];
         var radius = pondRadius + 20; //duck width added
 
+        // flip the duck 25% of the time
+        if (Math.random()<.015 && game.isRunning)
+            ducky.duck.scale.x *= -1;
+        //we start with zero score and depending upon whether a particular duck is inside the pond or not asign the score.
+        ducky.duck.score=0;
+
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
-        if(duckWithinPond < (radius + 3) * (radius + 3)){
+        if(duckWithinPond < (radius + 5) * (radius + 5)){
             if (duckWithinPond < (radius - 5) * (radius - 5)){
                 //keeps ducks in the pond when they are placed in there, increasing the score
                 ducky.duck.body.velocity.x *= 0;
@@ -101,28 +158,58 @@ function render(){
             //keeps ducks out of the pond while they waddle around
             ducky.duck.body.velocity.x *= -1;
             ducky.duck.body.velocity.y *= -1;
-        } else {
-
         }
     }
 }
 
-function setupTextBar() {
-    var style = { font: "45px Arial", fill: "yellow", align: "left" };
-    scoreText = game.add.text(0, 0, scoreText, style);
+function setSoundFrame(){
+    soundButton.frame = soundOn?0:1;
+}
 
+function setupTopBar() {
+    soundButton = game.add.button(0, 0, "soundSprite", toggleSound, this);
+    setSoundFrame();
+    soundButton.scale.setTo(0.4, 0.4);
+    var style = { font: "25px Arial", fill: "yellow", align: "left" };
     //  Create Countdown Timer
     timer = game.time.create(false);
     timer.loop(1000, updateTimeCounter, this);
     timer.start();
-    timeText = game.add.text(w-200, 0, timeText, style); //sets the time 200px from the right of the edge of the screen
 }
+
+function setupLevel() {
+    numOfDucks = 4 + level;
+    duckVelocity = 45 + (level * 3);
+    pondRadius = 100 - (level * 3);
+    time = 20 - level;
+    if (level > 10) {
+        time = 10;
+    }
+}
+
+function initPond()
+{
+    pond = game.add.graphics(0, 0);
+    pond.lineStyle(0);
+    pond.beginFill(0x19C5FF, 0.65);
+
+    var pondXMax = game.world.bounds.width - pondRadius;
+    var pondYMax = game.world.bounds.height - pondRadius;
+    pondLocation[0] = Math.floor(Math.random() * pondXMax) + 1 + (pondRadius);
+    pondLocation[1] = Math.floor(Math.random() * pondYMax) + 1 + (pondRadius);
+
+    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
+}
+var timeDiv = document.getElementById("timer");
+var scoreDiv = document.getElementById("score");
+var levelDiv = document.getElementById("level");
 
 function updateTimeCounter() {
     time--;
-    timeText.setText("Time: " + time);
+    timeDiv.innerHTML = "Time: " + time;
     if (time <= 0) {
-        timeText.setText("Time Up!");
+        timeDiv.innerHTML = "Time Up!";
+        continueGame = false;
         gameEnd();
     }
 }
@@ -133,10 +220,12 @@ function duckScore() {
         roundScore += ducks[i].duck.score;
     }
     roundScore *= 10;
-    scoreText.setText("Score: " + roundScore);
     if (roundScore / 10 == numOfDucks) {
-        scoreText.setText("You Win!");
         gameEnd();
+    } else {
+        scoreDiv.innerHTML = "Score: " + roundScore;
+        levelDiv.innerHTML = "Level: " + level;
+
     }
 }
 
@@ -149,8 +238,169 @@ function gameEnd() {
         ducks[i].duck.inputEnabled = false;
     }
     //adjusting the final scores
-    score += roundScore;
-    var newTotal = score + parseInt(localStorage.getItem("totalScore"));
-    localStorage.setItem("totalScore", (newTotal));
-    scoreText.setText("Total Score: " + newTotal);
+    totalScore += roundScore;
+    scoreDiv.innerHTML = "Total Score: " + totalScore;
+    localStorage.setItem("totalScore", totalScore);
+    // This function updates the best score after each run of the game.
+    updateBestScore();
+    roundScore = 0;
+    if (continueGame) {
+        showOverlay("continue");
+    } else {
+        showOverlay("playagain");
+        scoreDiv.innerHTML = "High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore"));
+    }
+}
+
+// This function updates the localstorage to the current best score
+function updateBestScore() {
+    if(typeof(Storage) !== "undefined") {
+        var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+
+        //check if the bestScore variable is available in
+        if(!prevBestScore) {
+            prevBestScore = 0;
+            localStorage.setItem("duckDerbyBestScore", 0);
+        }
+
+        if(totalScore > prevBestScore)
+        {
+            localStorage.setItem("duckDerbyBestScore", totalScore);
+            if(prevBestScore!=0){
+                recordScore = true;
+            }
+        }
+    } else {
+        // Sorry! No local Storage support..
+        alert('This version of local web browser does not support local storage');
+    }
+}
+
+function showOverlay(overlayType) {
+    var overlay = document.createElement("div"),
+        random;
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    document.body.appendChild(overlay);
+
+
+    var createOverlayDiv = function(divId){
+        var message_div = document.createElement("div");
+        message_div.setAttribute("id", divId);
+        message_div.setAttribute("class", "center");
+        return message_div;
+    };
+
+    overlay.appendChild(createOverlayDiv("mdiv"));
+
+
+    var actionButton = document.createElement("input");
+    actionButton.setAttribute("type", "button");
+
+    actionButton.setAttribute("id", "but");
+    actionButton.setAttribute("class", "btn center");
+    actionButton.setAttribute("style", "font-family: Arial");
+    if (overlayType == "continue") {
+        actionButton.setAttribute("onclick", "reload()");
+        actionButton.setAttribute("value", "Continue");
+        document.getElementById("mdiv").innerHTML = "Congratulations!! You saved your ducks";
+    } else {
+        actionButton.setAttribute("onclick", "finalView()");
+        actionButton.setAttribute("value", "Play Again");
+        document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+        if(recordScore){
+            overlay.appendChild(createOverlayDiv("highscdiv"));
+            document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
+            recordScore = false;
+        }
+        random = Math.round(Math.random() * (facts.length-1));
+        overlay.appendChild(createOverlayDiv("factsdiv"));
+        document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
+		
+		var fbButton = document.createElement("input");
+		fbButton.setAttribute("type", "button");
+		fbButton.setAttribute("id", "fbbut");
+		fbButton.setAttribute("class", "btn center");
+		fbButton.setAttribute("style", "font-family: Arial");
+		fbButton.setAttribute("onclick", "post_on_wall()");
+		fbButton.setAttribute("value", "Post to Facebook");
+		
+		overlay.appendChild(fbButton);
+    }
+    overlay.appendChild(actionButton);
+}
+
+function reload() {
+    removeIfAnyExtraneousDivs();
+    localStorage.setItem("gameLevel", (level + 1));
+    location.reload();
+}
+
+function finalView() {
+    removeIfAnyExtraneousDivs();
+    localStorage.setItem("totalScore", 0);
+    localStorage.setItem("gameLevel", 1);
+    location.reload(true);
+}
+
+function removeIfAnyExtraneousDivs() {
+    var overlay = document.getElementById('overlay');
+    if(overlay) {
+        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv','fbbut'];
+        for (var i = 0; i < divsToRemove.length; i++){
+            if(document.getElementById(divsToRemove[i])){
+                overlay.removeChild( document.getElementById(divsToRemove[i]) );
+            }
+        }
+        document.body.removeChild(overlay);
+    }
+}
+
+function toggleSound() {
+    soundOn = !soundOn;
+    localStorage.setItem("duckDerbySoundOn", soundOn);
+    setSoundFrame();
+}
+
+function collisionHandler(){
+    if (soundOn) {
+        quack.play();
+    }
+}
+
+function post_on_wall()
+{
+    FB.login(function(response)
+    {
+        if (response.authResponse)
+        {
+            alert('Logged in!');
+ 
+            // Post message to your wall
+ 
+            var opts = {
+                message : 'Adopt a Duck, Help a child!',
+                name : 'Duck Derby',
+                link : 'http://www.yessduckderby.org',
+                description : 'YESS Youth Emergency Shelter Services',
+                picture : 'http://www.duckrace.com/images/duck_small.png'
+            };
+ 
+            FB.api('/me/feed', 'post', opts, function(response)
+            {
+                if (!response || response.error)
+                {
+                    //alert('Posting error occured');
+                }
+                else
+                {
+                    //alert('Success - Post ID: ' + response.id);
+                }
+            });
+        }
+        else
+        {
+            alert('Not logged in');
+        }
+    }, { scope : 'publish_stream' });
 }
