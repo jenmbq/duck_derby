@@ -1,5 +1,5 @@
 pondLocation = [190, 200];
-pondRadius = 100;
+pondRadius = 90;
 Duck = function(){
     this.x = game.world.randomX;
     this.y = game.world.randomY;
@@ -20,6 +20,7 @@ Duck = function(){
     this.duck.body.immovable = true;
     this.duck.scale.x=duckScale;
     this.duck.scale.y=duckScale;
+    this.duck.scale.x = (Math.random()<.5) ? this.duck.scale.x : this.duck.scale.x * -1;
     this.duck.score=0;
     var self=this;
     this.duck.touchDown = function(){
@@ -69,17 +70,27 @@ function preload() {
 
 function create() {
     setupTextBar();
-    pond = game.add.graphics(0, 0);
-    game.stage.backgroundColor = "#4C8F00";
+    initPond();
+    game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
-    pond.lineStyle(0);
-    pond.beginFill(0x8CF2FF, 0.5);
-    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
-
     ducks = [];
     for (var i=0; i<numOfDucks; i++) {
         ducks.push( new Duck() );
     }
+}
+
+function initPond()
+{
+    pond = game.add.graphics(0, 0);
+    pond.lineStyle(0);
+    pond.beginFill(0x19C5FF, 0.65);
+
+    var pondXMax = game.world.bounds.width - pondRadius;
+    var pondYMax = game.world.bounds.height - pondRadius;
+    pondLocation[0] = Math.floor(Math.random() * pondXMax) + 1 + (pondRadius);
+    pondLocation[1] = Math.floor(Math.random() * pondYMax) + 1 + (pondRadius);
+
+    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 }
 
 function update() {
@@ -94,6 +105,9 @@ function render(){
         var center_x = pondLocation[0];
         var center_y = pondLocation[1];
         var radius = pondRadius + 20; //duck width added
+
+        // flip the duck 25% of the time
+        if (Math.random()<.015) ducky.duck.scale.x *= -1;
 
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
         if(duckWithinPond < (radius + 3) * (radius + 3)){
