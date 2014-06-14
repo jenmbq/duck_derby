@@ -198,8 +198,6 @@ function gameEnd() {
     scoreText.setText("Total Score: " + score + " Best Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
     newTotal = score + parseInt(localStorage.getItem("totalScore"));
     localStorage.setItem("totalScore", (newTotal));
-    scoreText.setText("Total Score: " + newTotal);
-    //game.add.button();
     roundScore = 0;
     var style = { font: "35px Arial", fill: "yellow", align: "center" };
     var text;
@@ -222,5 +220,5 @@ function reload() {
 function finalView() {
     localStorage.removeItem("totalScore");
     localStorage.removeItem("gameLevel");
-    reload();
+    location.reload(true);
 }
