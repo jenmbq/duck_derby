@@ -12,7 +12,7 @@ Duck = function(){
     this.duck.input.enableDrag(false, true);
     game.physics.enable(this.duck, Phaser.Physics.ARCADE);
     this.duck.body.collideWorldBounds = true;
-    this.duck.body.bounce.setTo(1, 1.05);
+    this.duck.body.bounce.setTo(1, 1.01);
     this.duck.body.velocity.x = this.vx;
     this.duck.body.velocity.y = this.vy;
     this.duck.body.immovable = true;
