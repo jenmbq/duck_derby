@@ -148,7 +148,7 @@ function setupTextBar() {
     timer = game.time.create(false);
     timer.loop(1000, updateTimeCounter, this);
     timer.start();
-    timeText = game.add.text(w - 100, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
+    timeText = game.add.text(w - 110, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
 }
 
 function setupLevel() {
@@ -216,16 +216,16 @@ function gameEnd() {
     localStorage.setItem("totalScore", (newTotal));
     roundScore = 0;
     var style = { font: "15px Arial", fill: "yellow", align: "center" };
-    var text;
+    var endText;
     if (continueGame) {
-        text = "Congratulations! Your ducks are safe.";
-        game.add.button(game.world.centerX + (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
+        endText = "Congratulations! Your ducks are safe.";
+        game.add.button(game.world.centerX - (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
     } else {
-        text = "You finished with a total score of " + newTotal + ".";
+        endText = "You finished with a total score of " + newTotal + ".";
         game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
         scoreText.setText("High Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
-    game.add.text(0, game.world.centerY-100, text, style);
+    game.add.text(0, game.world.centerY-100, endText, style);
 
 }
 
