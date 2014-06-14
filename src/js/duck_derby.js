@@ -40,6 +40,7 @@ Duck = function(){
     this.duck.events.onInputUp.add(self.duck.touchUp, this);
 };
 
+
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
