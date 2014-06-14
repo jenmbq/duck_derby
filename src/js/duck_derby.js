@@ -62,9 +62,10 @@ var timer = new Phaser.Timer(game);
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 var topLeftText = "Level " + level + " Score: " + roundScore;
-
+var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
+    game.load.image('grass', 'img/grass.png');
     game.load.audio('quack', 'audio/quack.wav');
 }
 
@@ -73,6 +74,11 @@ function create() {
     setupTextBar();
     initPond();
     game.stage.backgroundColor = "#62B51F";
+    //  Our tiled scrolling background
+    grass = game.add.tileSprite(0, 0, w, h, 'grass');
+    game.world.bringToTop(pond);
+    game.world.bringToTop(timeText);
+    game.world.bringToTop(topLeftText);
     quack = game.add.audio('quack');
     ducks = [];
     for (var i = 0; i < numOfDucks;i++) {
