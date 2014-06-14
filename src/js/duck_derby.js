@@ -52,6 +52,7 @@ var numOfDucks = 10;
 var pond;
 var ducks;
 var quack;
+var soundButton;
 var roundScore = 0;
 var continueGame = true;
 var duckVelocity = 45;
@@ -72,7 +73,8 @@ var facts = ["YESS stands for Youth Emergency Services and Shelter.",
     "YESS provides emergency shelter, crisis intervention and counseling.",
     "Adopt a duck.  Help a child.",
     "YESS helps children whose home is not always a safe option.",
-    "YESS is open 24 hours a day, 7 days a week, 365 days a year."];
+    "YESS is open 24 hours a day, 7 days a week, 365 days a year.",
+    "YESS hosts a REAL duck derby every first Saturday in May."];
 var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
@@ -88,9 +90,11 @@ function create() {
     game.stage.backgroundColor = "#62B51F";
     //  Our tiled scrolling background
     grass = game.add.tileSprite(0, 0, w, h, 'grass');
+
     game.world.bringToTop(pond);
     game.world.bringToTop(timeText);
     game.world.bringToTop(topLeftText);
+    game.world.bringToTop(soundButton);
     quack = game.add.audio('quack');
     ducks = [];
     for (var i = 0; i < numOfDucks;i++) {
@@ -99,26 +103,22 @@ function create() {
  		while(isDuckWithinPond(newDuck)) {
 			newDuck.duck.position.x = game.world.randomX;
 			newDuck.duck.position.y = game.world.randomY;
-
 		}
-        	ducks.push(newDuck);
-       }
-
+        ducks.push(newDuck);
+    }
 }
 
 function isDuckWithinPond(newDuck) {
-        var x = newDuck.duck.position.x;
-        var y = newDuck.duck.position.y;
-        var center_x = pondLocation[0];
-        var center_y = pondLocation[1];
-        var groupRadius = pondRadius + 20; //duck width added
-
-
-		var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
-		if(distanceFromPond < (groupRadius+5)*(groupRadius+5)) {
-			return true;
-		}
-		else { return false; }
+    var x = newDuck.duck.position.x;
+    var y = newDuck.duck.position.y;
+    var center_x = pondLocation[0];
+    var center_y = pondLocation[1];
+    var groupRadius = pondRadius + 20; //duck width added
+    var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
+    if(distanceFromPond < (groupRadius+5)*(groupRadius+5)) {
+        return true;
+    } else {
+        return false; }
 }
 
 function update() {
@@ -159,7 +159,7 @@ function render() {
 }
 
 function setupTopBar() {
-    var soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
+    soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
     soundButton.scale.setTo(0.4, 0.4);
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
     topLeftText = game.add.text(soundButton.width, 0, topLeftText, style);
@@ -172,7 +172,7 @@ function setupTopBar() {
 }
 
 function setupLevel() {
-    numOfDucks = level;
+    numOfDucks = 4 + level;
     duckVelocity = 45 + (level * 3);
     pondRadius = 100 - (level * 3);
     time = 20 - level;
@@ -305,8 +305,6 @@ function showOverlay(overlayType) {
         random = Math.round(Math.random()*6);
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
-
-
     }
     overlay.appendChild(actionButton);
 }
@@ -319,8 +317,8 @@ function reload() {
 
 function finalView() {
 	removeIfAnyExtraneousDivs();
-    localStorage.removeItem("totalScore");
-    localStorage.removeItem("gameLevel");
+    localStorage.setItem("totalScore", 0);
+    localStorage.setItem("gameLevel", 1);
     location.reload(true);
 }
 
