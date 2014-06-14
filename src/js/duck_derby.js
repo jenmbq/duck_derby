@@ -137,6 +137,8 @@ function render() {
         // flip the duck 25% of the time
         if (Math.random()<.015 && game.isRunning)
             ducky.duck.scale.x *= -1;
+		//we start with zero score and depending upon whether a particular duck is inside the pond or not asign the score.
+		ducky.duck.score=0;
 
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
         if(duckWithinPond < (radius + 5) * (radius + 5)){
