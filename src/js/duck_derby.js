@@ -62,6 +62,9 @@ var objects = 0;
 var time = 20;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
+if (typeof(Storage) === "undefined") {
+    alert('This version of local web browser does not support local storage');
+}
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 
