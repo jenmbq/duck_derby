@@ -118,10 +118,7 @@ function isDuckWithinPond(newDuck) {
     var center_y = pondLocation[1];
     var groupRadius = pondRadius + 20; //duck width added
     var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
-    if(distanceFromPond < (groupRadius+5)*(groupRadius+5)) {
-        return true;
-    } else {
-        return false; }
+    return distanceFromPond < (groupRadius + 5) * (groupRadius + 5);
 }
 
 function update() {
@@ -283,7 +280,7 @@ function showOverlay(overlayType) {
         message_div.setAttribute("id", divId);
         message_div.setAttribute("class", "center");
         return message_div;
-    }
+    };
 
     overlay.appendChild(createOverlayDiv("mdiv"));
 
@@ -331,7 +328,7 @@ function removeIfAnyExtraneousDivs() {
 	var overlay = document.getElementById('overlay');
   	if(overlay) {
         var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
-        for (i = 0; i < divsToRemove.length; i++){
+        for (var i = 0; i < divsToRemove.length; i++){
             if(document.getElementById(divsToRemove[i])){
                 overlay.removeChild( document.getElementById(divsToRemove[i]) );
             }
@@ -345,7 +342,7 @@ function toggleSound() {
     localStorage.setItem("duckDerbySoundOn", soundOn);
 }
 
-function collisionHandler(obj1, obj2){
+function collisionHandler(){
     if (soundOn) {
         quack.play();
     }
