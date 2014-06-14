@@ -302,7 +302,8 @@ function showOverlay(overlayType) {
             document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
             recordScore = false;
         }
-        random = Math.round(Math.random()*6);
+        random = Math.round(Math.random() * (facts.length-1));
+        console.log((facts.length-1))
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
 
