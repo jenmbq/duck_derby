@@ -75,9 +75,32 @@ function create() {
     game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
     ducks = [];
-    for (var i = 0; i < numOfDucks; i++) {
-        ducks.push(new Duck());
-    }
+    for (var i = 0; i < numOfDucks;i++) {
+	    var newDuck = new Duck();
+		//if duck is created within the pond then keep changing the position till the duck is not in the pond anymore.
+ 		while(isDuckWithinPond(newDuck)) {
+			newDuck.duck.position.x = game.world.randomX;
+			newDuck.duck.position.y = game.world.randomY;
+		
+		}
+        	ducks.push(newDuck);
+       }
+	
+}
+
+function isDuckWithinPond(newDuck) {
+        var x = newDuck.duck.position.x;
+        var y = newDuck.duck.position.y;
+        var center_x = pondLocation[0];
+        var center_y = pondLocation[1];
+        var groupRadius = pondRadius + 20; //duck width added
+
+
+		var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
+		if(distanceFromPond < (groupRadius+5)*(groupRadius+5)) {
+			return true;
+		}
+		else { return false; }
 }
 
 function update() {
