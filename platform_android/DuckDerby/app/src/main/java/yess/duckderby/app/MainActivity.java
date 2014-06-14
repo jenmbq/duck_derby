@@ -1,5 +1,6 @@
 package yess.duckderby.app;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -10,7 +11,7 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +19,10 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         WebView webview = (WebView)findViewById(R.id.activity_main_webview);
-        String file = "file:///android_asset/www/index.html";
+        String file = "http://jenmarks-wf.github.io/duck_derby/src/index.html";
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webview.loadUrl(file);
-
     }
 
     @Override

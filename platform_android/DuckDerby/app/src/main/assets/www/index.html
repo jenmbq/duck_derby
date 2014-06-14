@@ -10,6 +10,8 @@
     </style>
 
     <script type="text/javascript">
+        pondLocation = [170, 200];
+        pondRadius = 100;
         Duck = function(){
             this.x = 0;
             this.y = game.world.randomY;
@@ -50,10 +52,16 @@
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
         var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
-        var numOfDucks = 100;
+        var numOfDucks = 50;
         var pond;
         var ducks;
         var quack;
+        var score = 0;
+        var time = 60;
+        var scoreText = "Score: " + score;
+        var timeText = "Time: " + time;
+        var timer = new Phaser.Timer(game);
+
 
         function preload() {
             game.load.image('duck', 'img/duck.png');
@@ -61,12 +69,13 @@
         }
 
         function create() {
+            setupTextBar();
             pond = game.add.graphics(0, 0);
             game.stage.backgroundColor = "#4C8F00";
             quack = game.add.audio('quack');
             pond.lineStyle(0);
             pond.beginFill(0x8CF2FF, 0.5);
-            pond.drawCircle(470, 200, 100);
+            pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 
             ducks = [];
             for (var i=0; i<numOfDucks; i++) {
@@ -75,7 +84,37 @@
         }
 
         function update() {
+            game.input.onUp.addOnce(duckScore, this);
+        }
 
+        function duckScore() {
+            score++;
+            scoreText.setText("Score: " + score);
+            if (score == numOfDucks) {
+                scoreText.setText("You Win!");
+                game.stage.backgroundColor = "#FAFAFA";
+            }
+        }
+
+        function setupTextBar() {
+            var style = { font: "45px Arial", fill: "yellow", align: "left" };
+            scoreText = game.add.text(0, 0, scoreText, style);
+
+            //  Create Countdown Timer
+            timer = game.time.create(false);
+            timer.loop(1000, updateTimeCounter, this);
+            timer.start();
+            timeText = game.add.text(w-200, 0, timeText, style);
+
+        }
+
+        function updateTimeCounter() {
+            time--;
+            timeText.setText("Time: " + time);
+            if (time <= 0) {
+                timeText.setText("Time Up!");
+                game.stage.backgroundColor = "#FAFAFA";
+            }
         }
 
         function render(){
@@ -83,9 +122,9 @@
                 var ducky = ducks[i];
                 var x = ducky.duck.position.x;
                 var y = ducky.duck.position.y;
-                var center_x = 470;
-                var center_y = 200;
-                var radius = 120;
+                var center_x = pondLocation[0];
+                var center_y = pondLocation[1];
+                var radius = pondRadius + 20;//duck width added
 
                 if((x - center_x)*(x - center_x) + (y - center_y) * (y - center_y)  < radius * radius){
                     ducky.duck.body.velocity.x *= -1;
