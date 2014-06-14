@@ -1,7 +1,7 @@
 pondLocation = [190, 200];
 pondRadius = 100;
 Duck = function(){
-    this.x = 0;
+    this.x = game.world.randomX;
     this.y = game.world.randomY;
     this.minSpeed = -duckVelocity;
     this.maxSpeed = duckVelocity;
@@ -26,10 +26,14 @@ Duck = function(){
         quack.play();
         self.duck.body.velocity.x = 0;
         self.duck.body.velocity.y = 0;
+        self.duck.scale.x = duckScalePickedUp;
+        self.duck.scale.y = duckScalePickedUp;
     };
     this.duck.touchUp = function(){
         self.duck.body.velocity.x = self.vx;
         self.duck.body.velocity.y = self.vy;
+        self.duck.scale.x = duckScale;
+        self.duck.scale.y = duckScale;
     };
     this.duck.events.onInputDown.add(self.duck.touchDown, this);
     this.duck.events.onInputUp.add(self.duck.touchUp, this);
@@ -48,6 +52,7 @@ var roundScore = 0;
 var time = 10;
 var duckVelocity = 45;
 var duckScale = 0.4;
+var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
 var scoreText = "Score: " + score;
 var timeText = "Time: " + time;
