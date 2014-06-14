@@ -60,6 +60,8 @@ var objects = 0;
 var scoreText = "Score: " + score;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
+var continueButton;
+var againButton;
 
 var level;
 if (localStorage.getItem("gameLevel")) {
@@ -75,8 +77,8 @@ if (localStorage.getItem("gameLevel")) {
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.audio('quack', 'audio/quack.wav');
-    game.load.image('continueButton','img/continue.png');
-    game.load.image('playAgainButton','img/playAgain.png');
+    continueButton = game.load.image('continueButton','img/continue.png');
+    againButton = game.load.image('playAgainButton','img/playAgain.png');
 }
 
 function create() {
@@ -139,14 +141,14 @@ function render(){
 }
 
 function setupTextBar() {
-    var style = { font: "45px Arial", fill: "yellow", align: "left" };
-    scoreText = game.add.text(0, 0, scoreText, style);
+    var style = { font: "25px Arial", fill: "yellow", align: "left" };
+    scoreText = game.add.text(0, 0, "Score: " + score, style);
 
     //  Create Countdown Timer
     timer = game.time.create(false);
     timer.loop(1000, updateTimeCounter, this);
     timer.start();
-    timeText = game.add.text(w-200, 0, timeText, style); //sets the time 200px from the right of the edge of the screen
+    timeText = game.add.text(w - 100, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
 }
 
 function setupLevel() {
@@ -209,20 +211,21 @@ function gameEnd() {
     score += roundScore;
 	// This function updates the best score after each run of the game.
 	updateBestScore();
-    scoreText.setText("Total Score: " + score + " Best Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
-    newTotal = score + parseInt(localStorage.getItem("totalScore"));
+    scoreText.setText("Total Score: " + score);
+    newTotal = score + parseInt(localStorage.getItem("totalScore")) || score;
     localStorage.setItem("totalScore", (newTotal));
     roundScore = 0;
-    var style = { font: "35px Arial", fill: "yellow", align: "center" };
+    var style = { font: "15px Arial", fill: "yellow", align: "center" };
     var text;
     if (continueGame) {
         text = "Congratulations! Your ducks are safe.";
-        game.add.button(game.world.centerX - 95, 400, 'continueButton', reload, this, 2, 1, 0);
+        game.add.button(game.world.centerX + (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
     } else {
-        text = "You finished with a total score of " + newTotal;
-        game.add.button(game.world.centerX - 95, 400, 'playAgainButton', finalView, this, 2, 1, 0);
+        text = "You finished with a total score of " + newTotal + ".";
+        game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
+        scoreText.setText("High Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
-    game.add.text(0, game.world.centerY-300, text, style);
+    game.add.text(0, game.world.centerY-100, text, style);
 
 }
 
