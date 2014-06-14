@@ -54,13 +54,38 @@
 
 </head>
 <body>
-<footer>
-    <div id="level">Level:1</div>
-    <div id="score">Score:0</div>
-    <div id="timer">Time:20</div>
-</footer>
-<script type="text/javascript" src="js/fastClick.js"></script>
-<script type="text/javascript" src="js/phaser.js"></script>
-<script type="text/javascript" src="js/duck_derby.js"></script>
+	<div id="fb-root"></div>
+	<footer>
+		<div id="level">Level:1</div>
+		<div id="score">Score:0</div>
+		<div id="timer">Time:20</div>
+	</footer>
+	<script type="text/javascript" src="js/fastClick.js"></script>
+	<script type="text/javascript" src="js/phaser.js"></script>
+	<script type="text/javascript" src="js/duck_derby.js"></script>
+	<script type="text/javascript">
+			(function() {
+		var e = document.createElement('script');
+		// replacing with an older version until FB fixes the cancel-login bug
+		//e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js'; --this is the code they were using
+		//e.src = 'scripts/all.js';
+		e.src = 'http://connect.facebook.net/en_US/all.js'
+		e.async = true;
+		document.getElementById('fb-root').appendChild(e);
+	}());
+	
+		window.fbAsyncInit = function()
+		{
+			FB.init({
+				appId  : '705901282803977',
+				status : true, // check login status
+				cookie : true, // enable cookies to allow the server to access the session
+				xfbml  : true , // parse XFBML
+				oauth : true // Enable oauth authentication
+			});
+		 
+		 
+		};
+	</script>
 </body>
 </html>

@@ -310,6 +310,16 @@ function showOverlay(overlayType) {
         random = Math.round(Math.random() * (facts.length-1));
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
+		
+		var fbButton = document.createElement("input");
+		fbButton.setAttribute("type", "button");
+		fbButton.setAttribute("id", "fbbut");
+		fbButton.setAttribute("class", "btn center");
+		fbButton.setAttribute("style", "font-family: Arial");
+		fbButton.setAttribute("onclick", "post_on_wall()");
+		fbButton.setAttribute("value", "Post to Facebook");
+		
+		overlay.appendChild(fbButton);
     }
     overlay.appendChild(actionButton);
 }
@@ -330,7 +340,7 @@ function finalView() {
 function removeIfAnyExtraneousDivs() {
     var overlay = document.getElementById('overlay');
     if(overlay) {
-        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
+        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv','fbbut'];
         for (var i = 0; i < divsToRemove.length; i++){
             if(document.getElementById(divsToRemove[i])){
                 overlay.removeChild( document.getElementById(divsToRemove[i]) );
@@ -349,4 +359,41 @@ function collisionHandler(){
     if (soundOn) {
         quack.play();
     }
+}
+
+function post_on_wall()
+{
+    FB.login(function(response)
+    {
+        if (response.authResponse)
+        {
+            alert('Logged in!');
+ 
+            // Post message to your wall
+ 
+            var opts = {
+                message : 'Adopt a Duck, Help a child!',
+                name : 'Duck Derby',
+                link : 'http://www.yessduckderby.org',
+                description : 'YESS Youth Emergency Shelter Services',
+                picture : 'http://www.duckrace.com/images/duck_small.png'
+            };
+ 
+            FB.api('/me/feed', 'post', opts, function(response)
+            {
+                if (!response || response.error)
+                {
+                    //alert('Posting error occured');
+                }
+                else
+                {
+                    //alert('Success - Post ID: ' + response.id);
+                }
+            });
+        }
+        else
+        {
+            alert('Not logged in');
+        }
+    }, { scope : 'publish_stream' });
 }
