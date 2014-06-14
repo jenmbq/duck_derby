@@ -84,6 +84,7 @@ var facts = ["YESS stands for Youth Emergency Services and Shelter.",
 var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
+    game.load.spritesheet('soundSprite','img/soundLayered.png',128,128,2);
     game.load.image('soundOn', 'img/sound.png');
     game.load.image('grass', 'img/grass.png');
     game.load.audio('quack', 'audio/quack.wav');
@@ -161,8 +162,13 @@ function render() {
     }
 }
 
+function setSoundFrame(){
+    soundButton.frame = soundOn?0:1;
+}
+
 function setupTopBar() {
-    soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
+    soundButton = game.add.button(0, 0, "soundSprite", toggleSound, this);
+    setSoundFrame();
     soundButton.scale.setTo(0.4, 0.4);
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
     //  Create Countdown Timer
@@ -354,6 +360,7 @@ function removeIfAnyExtraneousDivs() {
 function toggleSound() {
     soundOn = !soundOn;
     localStorage.setItem("duckDerbySoundOn", soundOn);
+    setSoundFrame();
 }
 
 function collisionHandler(){
