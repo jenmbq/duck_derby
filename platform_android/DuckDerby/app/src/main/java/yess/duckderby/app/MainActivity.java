@@ -20,8 +20,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         WebView webview = (WebView)findViewById(R.id.activity_main_webview);
-        //String file = "http://jenmarks-wf.github.io/duck_derby/src/index.html";
-        String file = "File:///android_asset/www/index.html";
+        String file = "http://jenmarks-wf.github.io/duck_derby/src/index.html";
+        //String file = "File:///android_asset/www/index.html";
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webview.loadUrl(file);

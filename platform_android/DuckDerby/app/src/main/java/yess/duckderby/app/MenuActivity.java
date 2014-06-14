@@ -13,8 +13,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class MenuActivity extends ActionBarActivity implements View.OnClickListener {
+
+    private String donateUrl = "https://www.networkforgood.org/donation/ExpressDonation.aspx?ORGID2=237442304";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,8 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
         final Button playButton= (Button)findViewById(R.id.play_button);
         final Button websiteButton= (Button)findViewById(R.id.website_button);
         final Button donateButton= (Button)findViewById(R.id.donate_button);
+
+        SetDonateButtonValues(donateButton);
 
         playButton.setOnClickListener(this);
         websiteButton.setOnClickListener(this);
@@ -48,7 +57,7 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
                 goToUrl("http://www.yessiowa.org");
                 break;
             case R.id.donate_button:
-                goToUrl("https://www.networkforgood.org/donation/ExpressDonation.aspx?ORGID2=237442304");
+                goToUrl(donateUrl);
                 break;
         }
     }
@@ -58,6 +67,31 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);
+    }
+
+    private void SetDonateButtonValues(Button donateButton)
+    {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, 2);
+        cal.set(Calendar.DATE, 17);
+        Date startDate = cal.getTime();
+
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.set(Calendar.YEAR, year);
+        calEnd.set(Calendar.MONTH, 4);
+        calEnd.set(Calendar.DATE, 8);
+        Date endDate = calEnd.getTime();
+
+        Date today = new Date();
+
+        if (today.compareTo(startDate) >= 0 && today.compareTo(endDate) < 0)
+        {
+            donateButton.setText("Adopt a Duck");
+            donateUrl = "http://www.yessduckderby.org";
+        }
     }
 
     @Override

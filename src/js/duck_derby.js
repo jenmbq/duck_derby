@@ -142,6 +142,8 @@ function render() {
         // flip the duck 25% of the time
         if (Math.random()<.015 && game.isRunning)
             ducky.duck.scale.x *= -1;
+		//we start with zero score and depending upon whether a particular duck is inside the pond or not asign the score.
+		ducky.duck.score=0;
 
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
         if(duckWithinPond < (radius + 5) * (radius + 5)){
@@ -302,7 +304,8 @@ function showOverlay(overlayType) {
             document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
             recordScore = false;
         }
-        random = Math.round(Math.random()*6);
+        random = Math.round(Math.random() * (facts.length-1));
+        console.log((facts.length-1))
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
     }
@@ -325,14 +328,12 @@ function finalView() {
 function removeIfAnyExtraneousDivs() {
 	var overlay = document.getElementById('overlay');
   	if(overlay) {
-		var but = document.getElementById('but');
-		var message_div = document.getElementById('mdiv');
-		if(but){
-		    overlay.removeChild(but);
-		}
-		if(message_div){
-		    overlay.removeChild(message_div);
-		}
+        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
+        for (i = 0; i < divsToRemove.length; i++){
+            if(document.getElementById(divsToRemove[i])){
+                overlay.removeChild( document.getElementById(divsToRemove[i]) );
+            }
+        }
 		document.body.removeChild(overlay);
 	}
 }
