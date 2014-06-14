@@ -71,6 +71,10 @@ if (typeof(Storage) === "undefined") {
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 
+
+if(localStorage.getItem("duckDerbySoundOn") == null){
+	localStorage.setItem("duckDerbySoundOn",'true');
+}
 var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
 var topLeftText = "Level " + level + " Score: " + roundScore;
 var recordScore = false;
@@ -84,7 +88,8 @@ var facts = ["YESS stands for Youth Emergency Services and Shelter.",
 var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
-    game.load.image('soundOn', 'img/sound.png');
+    game.load.image('sound', 'img/sound.png');
+	game.load.image('mute','img/mute.png');
     game.load.image('grass', 'img/grass.png');
     game.load.audio('quack', 'audio/quack.wav');
 }
@@ -162,8 +167,9 @@ function render() {
 }
 
 function setupTopBar() {
-    soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
+    soundButton = game.add.button(0, 0, "sound", toggleSound, this, 2, 1, 0);
     soundButton.scale.setTo(0.4, 0.4);
+	setSoundIcon();
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
     //  Create Countdown Timer
     timer = game.time.create(false);
@@ -343,6 +349,21 @@ function removeIfAnyExtraneousDivs() {
 function toggleSound() {
     soundOn = !soundOn;
     localStorage.setItem("duckDerbySoundOn", soundOn);
+	setSoundIcon();
+	 
+}
+
+function setSoundIcon()
+{
+if(soundOn) {
+	 soundButton.loadTexture("sound",2);
+	}
+	else
+	{
+	 soundButton.loadTexture("mute",2);
+	}
+
+	
 }
 
 function collisionHandler(){
