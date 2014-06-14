@@ -12,11 +12,9 @@
         <title>Duck Derby</title>
 
 
-        <link rel="stylesheet" href="css/themes/ducks.min.css" />
+        <link rel="stylesheet" href="css/themes/ducks.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.2.min.css" />
-        <script src="js/vendor/jquery-1.10.2.min.js"></script>
-        <script src="js/vendor/jquery.mobile-1.4.2.min.js"></script>
 
 
         <style>
@@ -42,14 +40,22 @@
 
 
         </div>
-        <button data-icon="star" data-theme="a" data-form="ui-btn-up-a"
-                class=" ui-btn ui-btn-a ui-icon-star ui-btn-icon-left ui-shadow ui-corner-all">Play Duck Derby</button>
-        <button data-icon="home" data-theme="a" data-form="ui-btn-up-a"
-                class=" ui-btn ui-btn-a ui-icon-home ui-btn-icon-left ui-shadow ui-corner-all">Visit website</button>
-        <button data-icon="gear" data-theme="a" data-form="ui-btn-up-a"
-                class=" ui-btn ui-btn-a ui-icon-gear ui-btn-icon-left ui-shadow ui-corner-all">Make a donation</button>
+
+        <a href="game.html" data-role="button" rel="external"
+           class="ui-btn ui-btn-a ui-icon-star ui-btn-icon-left ui-shadow ui-corner-all">
+            Play Duck Derby</a>
+        <a href="index.html" data-role="button"
+           class="ui-btn ui-btn-a ui-icon-home ui-btn-icon-left ui-shadow ui-corner-all">
+            Visit website</a>
+        <a href="index.html" data-role="button"
+           class="ui-btn ui-btn-a ui-icon-gear ui-btn-icon-left ui-shadow ui-corner-all">
+            Make a donation</a>
 
     </div>
+
+
+
+
 
 
 
@@ -61,6 +67,16 @@
         <script type="text/javascript">
             app.initialize();
         </script>
+        <script type="text/javascript">
+            $(document).bind('mobileinit', function () {
+                $.mobile.activeBtnClass = 'notInUseSelector';
+            });
+        </script>
+
+    <script src="js/vendor/jquery.mobile-1.4.2.min.js"></script>
+
+
+
 
     </body>
 </html>
