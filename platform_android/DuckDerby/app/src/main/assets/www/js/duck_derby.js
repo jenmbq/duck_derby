@@ -1,10 +1,3 @@
-// just the test code
-
-
-
-
-pondLocation = [190, 200];
-pondRadius = 90;
 Duck = function(){
     this.x = game.world.randomX;
     this.y = game.world.randomY;
@@ -17,17 +10,18 @@ Duck = function(){
     this.duck.anchor.setTo(0.5, 0.5);
     this.duck.inputEnabled = true;
     this.duck.input.enableDrag(false, true);
-    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
-    this.duck.body.collideWorldBounds = true;
-    this.duck.body.bounce.setTo(1, 1.05);
-    this.duck.body.velocity.x = this.vx;
-    this.duck.body.velocity.y = this.vy;
-    this.duck.body.immovable = true;
     this.duck.scale.x=duckScale;
     this.duck.scale.y=duckScale;
     this.duck.scale.x = (Math.random()<.5) ? this.duck.scale.x : this.duck.scale.x * -1;
     this.duck.score=0;
-    var self=this;
+    game.physics.enable(this.duck, Phaser.Physics.ARCADE);
+    this.duck.body.immovable = false;
+    this.duck.body.collideWorldBounds = true;
+    this.duck.body.bounce.setTo(1, 1.01);
+    this.duck.body.velocity.x = this.vx;
+    this.duck.body.velocity.y = this.vy;
+
+    var self = this;
     this.duck.touchDown = function(){
         quack.play();
         self.duck.body.velocity.x = 0;
@@ -46,72 +40,16 @@ Duck = function(){
 };
 
 
-function showOverlay(overlayType) {
-
-   var overlay = document.createElement("div");
-   overlay.setAttribute("id","overlay");
-   overlay.setAttribute("class", "overlay");
-   document.body.appendChild(overlay);
-
-	var message_div = document.createElement("div");
-	message_div.setAttribute("id","mdiv");
-    message_div.setAttribute("class","center");
-	overlay.appendChild(message_div);
-
-
-   var actionButton = document.createElement("input");
-   actionButton.setAttribute("type","button");
-	
-   actionButton.setAttribute("id","but");
-   actionButton.setAttribute("class","btn center");
-   if(overlayType=="continue"){
-   actionButton.setAttribute("onclick","reload()");
-   actionButton.setAttribute("value","Continue");
-   document.getElementById("mdiv").innerHTML = "Congratulations!! you Saved your ducks";
-   
-   
-	}
-   else
-   {
-   actionButton.setAttribute("onclick","finalView()");
-   actionButton.setAttribute("value","Play Again");
-	document.getElementById("mdiv").innerHTML = "You Lost in this level!! But there is always next time :) !!";
-
-   
-   }
-   overlay.appendChild(actionButton);
-}
-   
-
-
-
-function removeIfAnyExtraneousDivs() {
-	var overlay = document.getElementById('overlay');
-  	if(overlay) {
-		var but = document.getElementById('but');
-		var message_div = document.getElementById('mdiv');
-		if(but){
-		overlay.removeChild(but);
-		}
-		if(message_div){
-		overlay.removeChild(message_div);
-		}
-		document.body.removeChild(overlay);
-	}
-}
-
-
-
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+var pondLocation = [190, 200];
+var pondRadius = 90;
 var numOfDucks = 10;
 var pond;
 var ducks;
 var quack;
-var newTotal;
-var score = 0;
 var roundScore = 0;
 var time = 20;
 var continueGame = true;
@@ -119,28 +57,15 @@ var duckVelocity = 45;
 var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
-var scoreText = "Score: " + score;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
-var continueButton;
-var againButton;
-
-var level;
-if (localStorage.getItem("gameLevel")) {
-    level = parseInt(localStorage.getItem("gameLevel"))
-} else {
-    level = 1;
-}
-//{
-//    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
-//    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
-//}; //levels aren't implemented yet
+var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
+var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
+var topLeftText = "Level " + level + " Score: " + roundScore;
 
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.audio('quack', 'audio/quack.wav');
-    continueButton = game.load.image('continueButton','img/continue.png');
-    againButton = game.load.image('playAgainButton','img/playAgain.png');
 }
 
 function create() {
@@ -150,9 +75,65 @@ function create() {
     game.stage.backgroundColor = "#62B51F";
     quack = game.add.audio('quack');
     ducks = [];
-    for (var i=0; i<numOfDucks; i++) {
-        ducks.push( new Duck() );
+    for (var i = 0; i < numOfDucks; i++) {
+        ducks.push(new Duck());
     }
+}
+
+function update() {
+    game.input.onUp.addOnce(duckScore, this);
+    for(var j=0;j<numOfDucks;j++) {
+        for (var k = j + 1; k < numOfDucks; k++) {
+            game.physics.arcade.collide(ducks[j].duck, ducks[k].duck, collisionHandler, null, this);
+        }
+    }
+}
+
+function render(){
+    for(var i=0;i<numOfDucks;i++){
+        var ducky = ducks[i];
+        var x = ducky.duck.position.x;
+        var y = ducky.duck.position.y;
+        var center_x = pondLocation[0];
+        var center_y = pondLocation[1];
+        var radius = pondRadius + 20; //duck width added
+
+        // flip the duck 25% of the time
+        if (Math.random()<.015 && game.isRunning)
+            ducky.duck.scale.x *= -1;
+
+        var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
+        if(duckWithinPond < (radius + 5) * (radius + 5)){
+            if (duckWithinPond < (radius - 5) * (radius - 5)){
+                //keeps ducks in the pond when they are placed in there, increasing the score
+                ducky.duck.body.velocity.x *= 0;
+                ducky.duck.body.velocity.y *= 0;
+                ducky.duck.score = 1;
+            }
+            //keeps ducks out of the pond while they waddle around
+            ducky.duck.body.velocity.x *= -1;
+            ducky.duck.body.velocity.y *= -1;
+        }
+    }
+}
+
+function setupTextBar() {
+    var style = { font: "25px Arial", fill: "yellow", align: "left" };
+    topLeftText = game.add.text(0, 0, topLeftText, style);
+
+    //  Create Countdown Timer
+    timer = game.time.create(false);
+    timer.loop(1000, updateTimeCounter, this);
+    timer.start();
+    timeText = game.add.text(w - 110, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
+}
+
+function setupLevel() {
+    //{
+    //    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
+    //    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
+    //}; //levels aren't implemented yet
+    numOfDucks = 10;
 }
 
 function initPond()
@@ -167,54 +148,6 @@ function initPond()
     pondLocation[1] = Math.floor(Math.random() * pondYMax) + 1 + (pondRadius);
 
     pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
-}
-
-function update() {
-    game.input.onUp.addOnce(duckScore, this);
-}
-
-function render(){
-    for(var i=0;i<numOfDucks;i++){
-        var ducky = ducks[i];
-        var x = ducky.duck.position.x;
-        var y = ducky.duck.position.y;
-        var center_x = pondLocation[0];
-        var center_y = pondLocation[1];
-        var radius = pondRadius + 20; //duck width added
-
-        // flip the duck 25% of the time
-        if (Math.random()<.015) ducky.duck.scale.x *= -1;
-
-        var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
-        if(duckWithinPond < (radius + 3) * (radius + 3)){
-            if (duckWithinPond < (radius - 5) * (radius - 5)){
-                //keeps ducks in the pond when they are placed in there, increasing the score
-                ducky.duck.body.velocity.x *= 0;
-                ducky.duck.body.velocity.y *= 0;
-                ducky.duck.score = 1;
-            }
-            //keeps ducks out of the pond while they waddle around
-            ducky.duck.body.velocity.x *= -1;
-            ducky.duck.body.velocity.y *= -1;
-        } else {
-
-        }
-    }
-}
-
-function setupTextBar() {
-    var style = { font: "25px Arial", fill: "yellow", align: "left" };
-    scoreText = game.add.text(0, 0, "Score: " + score, style);
-
-    //  Create Countdown Timer
-    timer = game.time.create(false);
-    timer.loop(1000, updateTimeCounter, this);
-    timer.start();
-    timeText = game.add.text(w - 110, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
-}
-
-function setupLevel() {
-    numOfDucks = level;
 }
 
 function updateTimeCounter() {
@@ -233,32 +166,11 @@ function duckScore() {
         roundScore += ducks[i].duck.score;
     }
     roundScore *= 10;
-    scoreText.setText("Score: " + roundScore);
     if (roundScore / 10 == numOfDucks) {
-        scoreText.setText("You Win!");
         gameEnd();
+    } else {
+        topLeftText.setText("Level " + level + " Score: " + roundScore);
     }
-}
-// This function updates the localstorage to the current best score
-function updateBestScore() {
-	if(typeof(Storage) !== "undefined") {
-		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
-	
-		//check if the bestScore variable is available in 	
-		if(!prevBestScore) {
-			prevBestScore = 0;
-			localStorage.setItem("duckDerbyBestScore",0);
-			
-		}
-		
-		if(score > prevBestScore)
-		{
-			localStorage.setItem("duckDerbyBestScore", (score));
-		}
-	} else {
-		// Sorry! No local Storage support..
-		alert('this version of local web browser does not support local storage');
-	}	
 }
 
 function gameEnd() {
@@ -270,27 +182,68 @@ function gameEnd() {
         ducks[i].duck.inputEnabled = false;
     }
     //adjusting the final scores
-    score += roundScore;
+    totalScore += roundScore;
+    topLeftText.setText("Total Score: " + totalScore);
+    localStorage.setItem("totalScore", totalScore);
 	// This function updates the best score after each run of the game.
 	updateBestScore();
-    scoreText.setText("Total Score: " + score);
-    newTotal = score + parseInt(localStorage.getItem("totalScore")) || score;
-    localStorage.setItem("totalScore", (newTotal));
     roundScore = 0;
-    var style = { font: "15px Arial", fill: "yellow", align: "center" };
-    var endText;
     if (continueGame) {
 		showOverlay("continue");
-       // endText = "Congratulations! Your ducks are safe.";
-      //  game.add.button(game.world.centerX - (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
     } else {
 		showOverlay("playagain");
-        //endText = "You finished with a total score of " + newTotal + ".";
-        //game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
-        scoreText.setText("High Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
+        topLeftText.setText("High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
-    game.add.text(0, game.world.centerY-100, endText, style);
+}
 
+// This function updates the localstorage to the current best score
+function updateBestScore() {
+	if(typeof(Storage) !== "undefined") {
+		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+
+		//check if the bestScore variable is available in
+		if(!prevBestScore) {
+			prevBestScore = 0;
+			localStorage.setItem("duckDerbyBestScore", 0);
+		}
+
+		if(totalScore > prevBestScore)
+		{
+			localStorage.setItem("duckDerbyBestScore", totalScore);
+		}
+	} else {
+		// Sorry! No local Storage support..
+		alert('This version of local web browser does not support local storage');
+	}
+}
+
+function showOverlay(overlayType) {
+    var overlay = document.createElement("div");
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    document.body.appendChild(overlay);
+
+    var message_div = document.createElement("div");
+    message_div.setAttribute("id", "mdiv");
+    message_div.setAttribute("class", "center");
+    overlay.appendChild(message_div);
+
+    var actionButton = document.createElement("input");
+    actionButton.setAttribute("type", "button");
+
+    actionButton.setAttribute("id", "but");
+    actionButton.setAttribute("class", "btn center");
+    actionButton.setAttribute("style", "font-family: Arial");
+    if (overlayType == "continue") {
+        actionButton.setAttribute("onclick", "reload()");
+        actionButton.setAttribute("value", "Continue");
+        document.getElementById("mdiv").innerHTML = "Congratulations!! You saved your ducks";
+    } else {
+        actionButton.setAttribute("onclick", "finalView()");
+        actionButton.setAttribute("value", "Play Again");
+        document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+    }
+    overlay.appendChild(actionButton);
 }
 
 function reload() {
@@ -305,3 +258,24 @@ function finalView() {
     localStorage.removeItem("gameLevel");
     location.reload(true);
 }
+
+function removeIfAnyExtraneousDivs() {
+	var overlay = document.getElementById('overlay');
+  	if(overlay) {
+		var but = document.getElementById('but');
+		var message_div = document.getElementById('mdiv');
+		if(but){
+		    overlay.removeChild(but);
+		}
+		if(message_div){
+		    overlay.removeChild(message_div);
+		}
+		document.body.removeChild(overlay);
+	}
+}
+
+function collisionHandler(obj1, obj2){
+    quack.play();
+
+}
+

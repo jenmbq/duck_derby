@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="YESS Website"
+        android:text="Visit Website"
         android:textSize="20sp"
         android:background="@color/yellow" />
 
