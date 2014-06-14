@@ -311,15 +311,15 @@ function showOverlay(overlayType) {
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
 		
-		var fbButton = document.createElement("input");
-		fbButton.setAttribute("type", "button");
-		fbButton.setAttribute("id", "fbbut");
-		fbButton.setAttribute("class", "btn center");
-		fbButton.setAttribute("style", "font-family: Arial");
-		fbButton.setAttribute("onclick", "post_on_wall()");
-		fbButton.setAttribute("value", "Post to Facebook");
+		//var fbButton = document.createElement("input");
+		//fbButton.setAttribute("type", "button");
+		//fbButton.setAttribute("id", "fbbut");
+		//fbButton.setAttribute("class", "btn center");
+		//fbButton.setAttribute("style", "font-family: Arial");
+		//fbButton.setAttribute("onclick", "post_on_wall()");
+		//fbButton.setAttribute("value", "Post to Facebook");
 		
-		overlay.appendChild(fbButton);
+		//overlay.appendChild(fbButton);
     }
     overlay.appendChild(actionButton);
 }
@@ -340,7 +340,8 @@ function finalView() {
 function removeIfAnyExtraneousDivs() {
     var overlay = document.getElementById('overlay');
     if(overlay) {
-        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv','fbbut'];
+        //var divsToRemove = ["but",'mdiv','factsdiv','highscdiv','fbbut'];
+		var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
         for (var i = 0; i < divsToRemove.length; i++){
             if(document.getElementById(divsToRemove[i])){
                 overlay.removeChild( document.getElementById(divsToRemove[i]) );
@@ -367,7 +368,7 @@ function post_on_wall()
     {
         if (response.authResponse)
         {
-            alert('Logged in!');
+            //alert('Logged in!');
  
             // Post message to your wall
  
@@ -393,7 +394,7 @@ function post_on_wall()
         }
         else
         {
-            alert('Not logged in');
+            //alert('Not logged in');
         }
     }, { scope : 'publish_stream' });
 }
