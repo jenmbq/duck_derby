@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    FastClick.attach(document.body);
+    FastClick.attach(document.body, {});
 }, false);
 
 Duck = function(){
@@ -45,38 +45,50 @@ Duck = function(){
     this.duck.events.onInputUp.add(self.duck.touchUp, this);
 };
 
-
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight - 30, window.innerHeight - 30 || 0);
 
+var timeDiv = document.getElementById("timer");
+var scoreDiv = document.getElementById("score");
+var levelDiv = document.getElementById("level");
+
+var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
+
+var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
+var numOfDucks = 4 + level;
+var duckVelocity = 45 + (level * 3);
+var pondRadius = 90 - (level * 3);
+var time = 20 - level;
+if (level > 10) {
+    time = 10;
+}
+timeDiv.innerHTML = "Time: " + time;
+scoreDiv.innerHTML = "Score: " + totalScore;
+levelDiv.innerHTML = "Level: " + level;
+
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 var pondLocation = [190, 200];
-var pondRadius = 90;
-var numOfDucks = 10;
 var pond;
 var ducks;
 var quack;
 var soundButton;
 var roundScore = 0;
 var continueGame = true;
-var duckVelocity = 45;
 var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
-var objects = 0;
-var time = 20;
 var timer = new Phaser.Timer(game);
+
 if (typeof(Storage) === "undefined") {
     alert('This version of local web browser does not support local storage');
 }
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 
-
+//setting the default sound as on
 if(localStorage.getItem("duckDerbySoundOn") == null){
 	localStorage.setItem("duckDerbySoundOn",'true');
 }
 var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
-var topLeftText = "Level " + level + " Score: " + roundScore;
 var recordScore = false;
 var facts = ["YESS stands for Youth Emergency Services and Shelter.",
     "YESS helps children from newborn to age 17.",
@@ -85,7 +97,7 @@ var facts = ["YESS stands for Youth Emergency Services and Shelter.",
     "YESS helps children whose home is not always a safe option.",
     "YESS is open 24 hours a day, 7 days a week, 365 days a year.",
     "YESS hosts a REAL duck derby every first Saturday in May."];
-var grass;
+
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.image('sound', 'img/sound.png');
@@ -95,12 +107,11 @@ function preload() {
 }
 
 function create() {
-    setupLevel();
     setupTopBar();
     initPond();
     game.stage.backgroundColor = "#62B51F";
     //  Our tiled scrolling background
-    grass = game.add.tileSprite(0, 0, w, h, 'grass');
+    game.add.tileSprite(0, 0, w, h, 'grass');
 
     game.world.bringToTop(pond);
     game.world.bringToTop(soundButton);
@@ -177,16 +188,6 @@ function setupTopBar() {
     timer.start();
 }
 
-function setupLevel() {
-    numOfDucks = 4 + level;
-    duckVelocity = 45 + (level * 3);
-    pondRadius = 100 - (level * 3);
-    time = 20 - level;
-    if (level > 10) {
-        time = 10;
-    }
-}
-
 function initPond()
 {
     pond = game.add.graphics(0, 0);
@@ -200,9 +201,6 @@ function initPond()
 
     pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 }
-var timeDiv = document.getElementById("timer");
-var scoreDiv = document.getElementById("score");
-var levelDiv = document.getElementById("level");
 
 function updateTimeCounter() {
     time--;
@@ -223,9 +221,8 @@ function duckScore() {
     if (roundScore / 10 == numOfDucks) {
         gameEnd();
     } else {
-        scoreDiv.innerHTML = "Score: " + roundScore;
+        scoreDiv.innerHTML = "Score: " + (roundScore + totalScore);
         levelDiv.innerHTML = "Level: " + level;
-
     }
 }
 
@@ -242,31 +239,31 @@ function gameEnd() {
     scoreDiv.innerHTML = "Total Score: " + totalScore;
     localStorage.setItem("totalScore", totalScore);
     // This function updates the best score after each run of the game.
-    updateBestScore();
+    UpdateHighScore();
     roundScore = 0;
     if (continueGame) {
         showOverlay("continue");
     } else {
         showOverlay("playagain");
-        scoreDiv.innerHTML = "High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore"));
+        scoreDiv.innerHTML = "High Score : " + parseInt(localStorage.getItem("duckDerbyhighscore"));
     }
 }
 
-// This function updates the localstorage to the current best score
-function updateBestScore() {
+// This function updates the localStorage to the current best score
+function UpdateHighScore() {
     if(typeof(Storage) !== "undefined") {
-        var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+        var prevHighScore = parseInt(localStorage.getItem("duckDerbyhighscore"));
 
-        //check if the bestScore variable is available in
-        if(!prevBestScore) {
-            prevBestScore = 0;
-            localStorage.setItem("duckDerbyBestScore", 0);
+        //check if the high score variable is available in
+        if(!prevHighScore) {
+            prevHighScore = 0;
+            localStorage.setItem("duckDerbyhighscore", 0);
         }
 
-        if(totalScore > prevBestScore)
+        if(totalScore > prevHighScore)
         {
-            localStorage.setItem("duckDerbyBestScore", totalScore);
-            if(prevBestScore!=0){
+            localStorage.setItem("duckDerbyhighscore", totalScore);
+            if(prevHighScore!=0){
                 recordScore = true;
             }
         }
@@ -310,7 +307,7 @@ function showOverlay(overlayType) {
         document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
         if(recordScore){
             overlay.appendChild(createOverlayDiv("highscdiv"));
-            document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
+            document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyhighscore"));
             recordScore = false;
         }
         random = Math.round(Math.random() * (facts.length-1));
