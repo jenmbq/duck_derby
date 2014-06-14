@@ -320,14 +320,12 @@ function finalView() {
 function removeIfAnyExtraneousDivs() {
 	var overlay = document.getElementById('overlay');
   	if(overlay) {
-		var but = document.getElementById('but');
-		var message_div = document.getElementById('mdiv');
-		if(but){
-		    overlay.removeChild(but);
-		}
-		if(message_div){
-		    overlay.removeChild(message_div);
-		}
+        var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
+        for (i = 0; i < divsToRemove.length; i++){
+            if(document.getElementById(divsToRemove[i])){
+                overlay.removeChild( document.getElementById(divsToRemove[i]) );
+            }
+        }
 		document.body.removeChild(overlay);
 	}
 }
