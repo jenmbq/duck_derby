@@ -66,10 +66,18 @@ var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 
 var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
 var topLeftText = "Level " + level + " Score: " + roundScore;
-
+var recordScore = false;
+var facts = ["YESS stands for Youth Emergency Services and Shelter.",
+    "YESS helps children from newborn to age 17.",
+    "YESS provides emergency shelter, crisis intervention and counseling.",
+    "Adopt a duck.  Help a child.",
+    "YESS helps children whose home is not always a safe option.",
+    "YESS is open 24 hours a day, 7 days a week, 365 days a year."];
+var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.image('soundOn', 'img/sound.png');
+    game.load.image('grass', 'img/grass.png');
     game.load.audio('quack', 'audio/quack.wav');
 }
 
@@ -78,11 +86,39 @@ function create() {
     setupTopBar();
     initPond();
     game.stage.backgroundColor = "#62B51F";
+    //  Our tiled scrolling background
+    grass = game.add.tileSprite(0, 0, w, h, 'grass');
+    game.world.bringToTop(pond);
+    game.world.bringToTop(timeText);
+    game.world.bringToTop(topLeftText);
     quack = game.add.audio('quack');
     ducks = [];
-    for (var i = 0; i < numOfDucks; i++) {
-        ducks.push(new Duck());
-    }
+    for (var i = 0; i < numOfDucks;i++) {
+	    var newDuck = new Duck();
+		//if duck is created within the pond then keep changing the position till the duck is not in the pond anymore.
+ 		while(isDuckWithinPond(newDuck)) {
+			newDuck.duck.position.x = game.world.randomX;
+			newDuck.duck.position.y = game.world.randomY;
+
+		}
+        	ducks.push(newDuck);
+       }
+
+}
+
+function isDuckWithinPond(newDuck) {
+        var x = newDuck.duck.position.x;
+        var y = newDuck.duck.position.y;
+        var center_x = pondLocation[0];
+        var center_y = pondLocation[1];
+        var groupRadius = pondRadius + 20; //duck width added
+
+
+		var distanceFromPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
+		if(distanceFromPond < (groupRadius+5)*(groupRadius+5)) {
+			return true;
+		}
+		else { return false; }
 }
 
 function update() {
@@ -194,54 +230,64 @@ function gameEnd() {
     totalScore += roundScore;
     topLeftText.setText("Total Score: " + totalScore);
     localStorage.setItem("totalScore", totalScore);
-	// This function updates the best score after each run of the game.
-	updateBestScore();
+    // This function updates the best score after each run of the game.
+    updateBestScore();
     roundScore = 0;
     if (continueGame) {
-		showOverlay("continue");
+        showOverlay("continue");
     } else {
-		showOverlay("playagain");
+        showOverlay("playagain");
         topLeftText.setText("High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
 }
 
 // This function updates the localstorage to the current best score
 function updateBestScore() {
-	if(typeof(Storage) !== "undefined") {
-		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+    if(typeof(Storage) !== "undefined") {
+        var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
 
-		//check if the bestScore variable is available in
-		if(!prevBestScore) {
-			prevBestScore = 0;
-			localStorage.setItem("duckDerbyBestScore", 0);
-		}
+        //check if the bestScore variable is available in
+        if(!prevBestScore) {
+            prevBestScore = 0;
+            localStorage.setItem("duckDerbyBestScore", 0);
+        }
 
-		if(totalScore > prevBestScore)
-		{
-			localStorage.setItem("duckDerbyBestScore", totalScore);
-		}
-	} else {
-		// Sorry! No local Storage support..
-		alert('This version of local web browser does not support local storage');
-	}
+        if(totalScore > prevBestScore)
+        {
+            localStorage.setItem("duckDerbyBestScore", totalScore);
+            if(prevBestScore!=0){
+                recordScore = true;
+            }
+        }
+    } else {
+        // Sorry! No local Storage support..
+        alert('This version of local web browser does not support local storage');
+    }
 }
 
 function showOverlay(overlayType) {
-    var overlay = document.createElement("div");
+    var overlay = document.createElement("div"),
+        random;
     overlay.setAttribute("id", "overlay");
     overlay.setAttribute("class", "overlay");
     document.body.appendChild(overlay);
 
-    var message_div = document.createElement("div");
-    message_div.setAttribute("id", "mdiv");
-    message_div.setAttribute("class", "nextCenter");
-    overlay.appendChild(message_div);
+
+    var createOverlayDiv = function(divId){
+        var message_div = document.createElement("div");
+        message_div.setAttribute("id", divId);
+        message_div.setAttribute("class", "center");
+        return message_div;
+    }
+
+    overlay.appendChild(createOverlayDiv("mdiv"));
+
 
     var actionButton = document.createElement("input");
     actionButton.setAttribute("type", "button");
 
     actionButton.setAttribute("id", "but");
-    actionButton.setAttribute("class", "btn nextCenter");
+    actionButton.setAttribute("class", "btn center");
     actionButton.setAttribute("style", "font-family: Arial");
     if (overlayType == "continue") {
         actionButton.setAttribute("onclick", "reload()");
@@ -251,6 +297,16 @@ function showOverlay(overlayType) {
         actionButton.setAttribute("onclick", "finalView()");
         actionButton.setAttribute("value", "Play Again");
         document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+        if(recordScore){
+            overlay.appendChild(createOverlayDiv("highscdiv"));
+            document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
+            recordScore = false;
+        }
+        random = Math.round(Math.random()*6);
+        overlay.appendChild(createOverlayDiv("factsdiv"));
+        document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
+
+
     }
     overlay.appendChild(actionButton);
 }
