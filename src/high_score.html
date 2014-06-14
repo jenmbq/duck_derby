@@ -33,7 +33,7 @@
 
 </style>
     <script type="text/javascript">
-		window.onload = function () {
+	window.onload = function () {
         var highScore = localStorage.getItem("duckDerbyBestScore");
        
 		if(!highScore) {
@@ -41,12 +41,12 @@
 		}
 
         document.getElementById("bestscore").innerHTML = highScore;
-}
+    };
 
-function onReset() {
- 	localStorage.setItem("duckDerbyBestScore",0);
-	 document.getElementById("bestscore").innerHTML = localStorage.getItem("duckDerbyBestScore") ;
-}
+    function onReset() {
+        localStorage.setItem("duckDerbyBestScore",0);
+         document.getElementById("bestscore").innerHTML = localStorage.getItem("duckDerbyBestScore") ;
+    }
     </script>
 
 

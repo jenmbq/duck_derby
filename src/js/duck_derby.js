@@ -1,10 +1,3 @@
-// just the test code
-
-
-
-
-pondLocation = [190, 200];
-pondRadius = 90;
 Duck = function(){
     this.x = game.world.randomX;
     this.y = game.world.randomY;
@@ -46,59 +39,16 @@ Duck = function(){
 };
 
 
-function showOverlay(overlayType) {
-    var overlay = document.createElement("div");
-    overlay.setAttribute("id", "overlay");
-    overlay.setAttribute("class", "overlay");
-    document.body.appendChild(overlay);
-
-    var message_div = document.createElement("div");
-    message_div.setAttribute("id", "mdiv");
-    message_div.setAttribute("class", "center");
-    overlay.appendChild(message_div);
-
-    var actionButton = document.createElement("input");
-    actionButton.setAttribute("type", "button");
-
-    actionButton.setAttribute("id", "but");
-    actionButton.setAttribute("class", "btn center");
-    if (overlayType == "continue") {
-        actionButton.setAttribute("onclick", "reload()");
-        actionButton.setAttribute("value", "Continue");
-        document.getElementById("mdiv").innerHTML = "Congratulations!! You saved your ducks";
-    } else {
-        actionButton.setAttribute("onclick", "finalView()");
-        actionButton.setAttribute("value", "Play Again");
-        document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
-    }
-    overlay.appendChild(actionButton);
-}
-
-function removeIfAnyExtraneousDivs() {
-	var overlay = document.getElementById('overlay');
-  	if(overlay) {
-		var but = document.getElementById('but');
-		var message_div = document.getElementById('mdiv');
-		if(but){
-		    overlay.removeChild(but);
-		}
-		if(message_div){
-		    overlay.removeChild(message_div);
-		}
-		document.body.removeChild(overlay);
-	}
-}
-
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+var pondLocation = [190, 200];
+var pondRadius = 90;
 var numOfDucks = 10;
 var pond;
 var ducks;
 var quack;
-var newTotal;
-var score = 0;
 var roundScore = 0;
 var time = 20;
 var continueGame = true;
@@ -106,28 +56,15 @@ var duckVelocity = 45;
 var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
-var scoreText = "Score: " + score;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
-var continueButton;
-var againButton;
-
-var level;
-if (localStorage.getItem("gameLevel")) {
-    level = parseInt(localStorage.getItem("gameLevel"))
-} else {
-    level = 1;
-}
-//{
-//    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
-//    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
-//}; //levels aren't implemented yet
+var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
+var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
+var topLeftText = "Level " + level + " Score: " + roundScore;
 
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.audio('quack', 'audio/quack.wav');
-    continueButton = game.load.image('continueButton','img/continue.png');
-    againButton = game.load.image('playAgainButton','img/playAgain.png');
 }
 
 function create() {
@@ -140,20 +77,6 @@ function create() {
     for (var i=0; i<numOfDucks; i++) {
         ducks.push( new Duck() );
     }
-}
-
-function initPond()
-{
-    pond = game.add.graphics(0, 0);
-    pond.lineStyle(0);
-    pond.beginFill(0x19C5FF, 0.65);
-
-    var pondXMax = game.world.bounds.width - pondRadius;
-    var pondYMax = game.world.bounds.height - pondRadius;
-    pondLocation[0] = Math.floor(Math.random() * pondXMax) + 1 + (pondRadius);
-    pondLocation[1] = Math.floor(Math.random() * pondYMax) + 1 + (pondRadius);
-
-    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 }
 
 function update() {
@@ -170,10 +93,11 @@ function render(){
         var radius = pondRadius + 20; //duck width added
 
         // flip the duck 25% of the time
-        if (Math.random()<.015) ducky.duck.scale.x *= -1;
+        if (Math.random()<.015 && game.isRunning)
+            ducky.duck.scale.x *= -1;
 
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
-        if(duckWithinPond < (radius + 3) * (radius + 3)){
+        if(duckWithinPond < (radius + 5) * (radius + 5)){
             if (duckWithinPond < (radius - 5) * (radius - 5)){
                 //keeps ducks in the pond when they are placed in there, increasing the score
                 ducky.duck.body.velocity.x *= 0;
@@ -189,7 +113,7 @@ function render(){
 
 function setupTextBar() {
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
-    scoreText = game.add.text(0, 0, "Score: " + score, style);
+    topLeftText = game.add.text(0, 0, topLeftText, style);
 
     //  Create Countdown Timer
     timer = game.time.create(false);
@@ -199,7 +123,25 @@ function setupTextBar() {
 }
 
 function setupLevel() {
+    //{
+    //    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
+    //    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
+    //}; //levels aren't implemented yet
     numOfDucks = level;
+}
+
+function initPond()
+{
+    pond = game.add.graphics(0, 0);
+    pond.lineStyle(0);
+    pond.beginFill(0x19C5FF, 0.65);
+
+    var pondXMax = game.world.bounds.width - pondRadius;
+    var pondYMax = game.world.bounds.height - pondRadius;
+    pondLocation[0] = Math.floor(Math.random() * pondXMax) + 1 + (pondRadius);
+    pondLocation[1] = Math.floor(Math.random() * pondYMax) + 1 + (pondRadius);
+
+    pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 }
 
 function updateTimeCounter() {
@@ -218,31 +160,11 @@ function duckScore() {
         roundScore += ducks[i].duck.score;
     }
     roundScore *= 10;
-    scoreText.setText("Score: " + roundScore);
     if (roundScore / 10 == numOfDucks) {
-        scoreText.setText("You Win!");
         gameEnd();
+    } else {
+        topLeftText.setText("Level " + level + " Score: " + roundScore);
     }
-}
-// This function updates the localstorage to the current best score
-function updateBestScore() {
-	if(typeof(Storage) !== "undefined") {
-		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
-	
-		//check if the bestScore variable is available in 	
-		if(!prevBestScore) {
-			prevBestScore = 0;
-			localStorage.setItem("duckDerbyBestScore",0);
-		}
-		
-		if(score > prevBestScore)
-		{
-			localStorage.setItem("duckDerbyBestScore", score);
-		}
-	} else {
-		// Sorry! No local Storage support..
-		alert('this version of local web browser does not support local storage');
-	}	
 }
 
 function gameEnd() {
@@ -254,27 +176,68 @@ function gameEnd() {
         ducks[i].duck.inputEnabled = false;
     }
     //adjusting the final scores
-    score += roundScore;
+    totalScore += roundScore;
+    topLeftText.setText("Total Score: " + totalScore);
+    localStorage.setItem("totalScore", totalScore);
 	// This function updates the best score after each run of the game.
 	updateBestScore();
-    scoreText.setText("Total Score: " + score);
-    newTotal = score + parseInt(localStorage.getItem("totalScore")) || score;
-    localStorage.setItem("totalScore", (newTotal));
     roundScore = 0;
-    var style = { font: "15px Arial", fill: "yellow", align: "center" };
-    var endText;
     if (continueGame) {
 		showOverlay("continue");
-       // endText = "Congratulations! Your ducks are safe.";
-      //  game.add.button(game.world.centerX - (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
     } else {
 		showOverlay("playagain");
-        //endText = "You finished with a total score of " + newTotal + ".";
-        //game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
-        scoreText.setText("High Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
+        topLeftText.setText("High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
-    game.add.text(0, game.world.centerY-100, endText, style);
+}
 
+// This function updates the localstorage to the current best score
+function updateBestScore() {
+	if(typeof(Storage) !== "undefined") {
+		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+
+		//check if the bestScore variable is available in
+		if(!prevBestScore) {
+			prevBestScore = 0;
+			localStorage.setItem("duckDerbyBestScore", 0);
+		}
+
+		if(totalScore > prevBestScore)
+		{
+			localStorage.setItem("duckDerbyBestScore", totalScore);
+		}
+	} else {
+		// Sorry! No local Storage support..
+		alert('This version of local web browser does not support local storage');
+	}
+}
+
+function showOverlay(overlayType) {
+    var overlay = document.createElement("div");
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    document.body.appendChild(overlay);
+
+    var message_div = document.createElement("div");
+    message_div.setAttribute("id", "mdiv");
+    message_div.setAttribute("class", "center");
+    overlay.appendChild(message_div);
+
+    var actionButton = document.createElement("input");
+    actionButton.setAttribute("type", "button");
+
+    actionButton.setAttribute("id", "but");
+    actionButton.setAttribute("class", "btn center");
+    actionButton.setAttribute("style", "font-family: Arial");
+    if (overlayType == "continue") {
+        actionButton.setAttribute("onclick", "reload()");
+        actionButton.setAttribute("value", "Continue");
+        document.getElementById("mdiv").innerHTML = "Congratulations!! You saved your ducks";
+    } else {
+        actionButton.setAttribute("onclick", "finalView()");
+        actionButton.setAttribute("value", "Play Again");
+        document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+    }
+    overlay.appendChild(actionButton);
 }
 
 function reload() {
@@ -289,3 +252,19 @@ function finalView() {
     localStorage.removeItem("gameLevel");
     location.reload(true);
 }
+
+function removeIfAnyExtraneousDivs() {
+	var overlay = document.getElementById('overlay');
+  	if(overlay) {
+		var but = document.getElementById('but');
+		var message_div = document.getElementById('mdiv');
+		if(but){
+		    overlay.removeChild(but);
+		}
+		if(message_div){
+		    overlay.removeChild(message_div);
+		}
+		document.body.removeChild(overlay);
+	}
+}
+
