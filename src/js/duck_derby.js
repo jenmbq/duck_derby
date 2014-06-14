@@ -62,6 +62,13 @@ var timer = new Phaser.Timer(game);
 var level = parseInt(localStorage.getItem("gameLevel")) ||  1;
 var totalScore = parseInt(localStorage.getItem("totalScore")) || 0;
 var topLeftText = "Level " + level + " Score: " + roundScore;
+var recordScore = false;
+var facts = ["YESS stands for Youth Emergency Services and Shelter.",
+    "YESS helps children from newborn to age 17.",
+    "YESS provides emergency shelter, crisis intervention and counseling.",
+    "Adopt a duck.  Help a child.",
+    "YESS helps children whose home is not always a safe option.",
+    "YESS is open 24 hours a day, 7 days a week, 365 days a year."];
 var grass;
 function preload() {
     game.load.image('duck', 'img/duck.png');
@@ -87,11 +94,11 @@ function create() {
  		while(isDuckWithinPond(newDuck)) {
 			newDuck.duck.position.x = game.world.randomX;
 			newDuck.duck.position.y = game.world.randomY;
-		
+
 		}
         	ducks.push(newDuck);
        }
-	
+
 }
 
 function isDuckWithinPond(newDuck) {
@@ -216,48 +223,58 @@ function gameEnd() {
     totalScore += roundScore;
     topLeftText.setText("Total Score: " + totalScore);
     localStorage.setItem("totalScore", totalScore);
-	// This function updates the best score after each run of the game.
-	updateBestScore();
+    // This function updates the best score after each run of the game.
+    updateBestScore();
     roundScore = 0;
     if (continueGame) {
-		showOverlay("continue");
+        showOverlay("continue");
     } else {
-		showOverlay("playagain");
+        showOverlay("playagain");
         topLeftText.setText("High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
 }
 
 // This function updates the localstorage to the current best score
 function updateBestScore() {
-	if(typeof(Storage) !== "undefined") {
-		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+    if(typeof(Storage) !== "undefined") {
+        var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
 
-		//check if the bestScore variable is available in
-		if(!prevBestScore) {
-			prevBestScore = 0;
-			localStorage.setItem("duckDerbyBestScore", 0);
-		}
+        //check if the bestScore variable is available in
+        if(!prevBestScore) {
+            prevBestScore = 0;
+            localStorage.setItem("duckDerbyBestScore", 0);
+        }
 
-		if(totalScore > prevBestScore)
-		{
-			localStorage.setItem("duckDerbyBestScore", totalScore);
-		}
-	} else {
-		// Sorry! No local Storage support..
-		alert('This version of local web browser does not support local storage');
-	}
+        if(totalScore > prevBestScore)
+        {
+            localStorage.setItem("duckDerbyBestScore", totalScore);
+            if(prevBestScore!=0){
+                recordScore = true;
+            }
+        }
+    } else {
+        // Sorry! No local Storage support..
+        alert('This version of local web browser does not support local storage');
+    }
 }
 
 function showOverlay(overlayType) {
-    var overlay = document.createElement("div");
+    var overlay = document.createElement("div"),
+        random;
     overlay.setAttribute("id", "overlay");
     overlay.setAttribute("class", "overlay");
     document.body.appendChild(overlay);
 
-    var message_div = document.createElement("div");
-    message_div.setAttribute("id", "mdiv");
-    message_div.setAttribute("class", "center");
-    overlay.appendChild(message_div);
+
+    var createOverlayDiv = function(divId){
+        var message_div = document.createElement("div");
+        message_div.setAttribute("id", divId);
+        message_div.setAttribute("class", "center");
+        return message_div;
+    }
+
+    overlay.appendChild(createOverlayDiv("mdiv"));
+
 
     var actionButton = document.createElement("input");
     actionButton.setAttribute("type", "button");
@@ -273,6 +290,16 @@ function showOverlay(overlayType) {
         actionButton.setAttribute("onclick", "finalView()");
         actionButton.setAttribute("value", "Play Again");
         document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+        if(recordScore){
+            overlay.appendChild(createOverlayDiv("highscdiv"));
+            document.getElementById("highscdiv").innerHTML = "Congratulations! You have a new high score: "+parseInt(localStorage.getItem("duckDerbyBestScore"));
+            recordScore = false;
+        }
+        random = Math.round(Math.random()*6);
+        overlay.appendChild(createOverlayDiv("factsdiv"));
+        document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
+
+
     }
     overlay.appendChild(actionButton);
 }
