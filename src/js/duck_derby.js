@@ -1,3 +1,7 @@
+window.addEventListener('load', function() {
+    FastClick.attach(document.body);
+}, false);
+
 Duck = function(){
     this.x = game.world.randomX;
     this.y = game.world.randomY;
@@ -43,7 +47,7 @@ Duck = function(){
 
 
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+var h = Math.max(document.documentElement.clientHeight - 30, window.innerHeight - 30 || 0);
 
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 var pondLocation = [190, 200];
@@ -60,7 +64,6 @@ var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
 var objects = 0;
 var time = 20;
-var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
 if (typeof(Storage) === "undefined") {
     alert('This version of local web browser does not support local storage');
@@ -95,8 +98,6 @@ function create() {
     grass = game.add.tileSprite(0, 0, w, h, 'grass');
 
     game.world.bringToTop(pond);
-    game.world.bringToTop(timeText);
-    game.world.bringToTop(topLeftText);
     game.world.bringToTop(soundButton);
     quack = game.add.audio('quack');
     ducks = [];
@@ -164,13 +165,10 @@ function setupTopBar() {
     soundButton = game.add.button(0, 0, "soundOn", toggleSound, this, 2, 1, 0);
     soundButton.scale.setTo(0.4, 0.4);
     var style = { font: "25px Arial", fill: "yellow", align: "left" };
-    topLeftText = game.add.text(soundButton.width, 0, topLeftText, style);
-
     //  Create Countdown Timer
     timer = game.time.create(false);
     timer.loop(1000, updateTimeCounter, this);
     timer.start();
-    timeText = game.add.text(w - 110, 0, timeText, style); //sets the time 100px from the right of the edge of the screen
 }
 
 function setupLevel() {
@@ -196,12 +194,15 @@ function initPond()
 
     pond.drawCircle(pondLocation[0], pondLocation[1], pondRadius);
 }
+var timeDiv = document.getElementById("timer");
+var scoreDiv = document.getElementById("score");
+var levelDiv = document.getElementById("level");
 
 function updateTimeCounter() {
     time--;
-    timeText.setText("Time: " + time);
+    timeDiv.innerHTML = "Time: " + time;
     if (time <= 0) {
-        timeText.setText("Time Up!");
+        timeDiv.innerHTML = "Time Up!";
         continueGame = false;
         gameEnd();
     }
@@ -216,7 +217,9 @@ function duckScore() {
     if (roundScore / 10 == numOfDucks) {
         gameEnd();
     } else {
-        topLeftText.setText("Level " + level + " Score: " + roundScore);
+        scoreDiv.innerHTML = "Score: " + roundScore;
+        levelDiv.innerHTML = "Level: " + level;
+
     }
 }
 
@@ -230,7 +233,7 @@ function gameEnd() {
     }
     //adjusting the final scores
     totalScore += roundScore;
-    topLeftText.setText("Total Score: " + totalScore);
+    scoreDiv.innerHTML = "Total Score: " + totalScore;
     localStorage.setItem("totalScore", totalScore);
     // This function updates the best score after each run of the game.
     updateBestScore();
@@ -239,7 +242,7 @@ function gameEnd() {
         showOverlay("continue");
     } else {
         showOverlay("playagain");
-        topLeftText.setText("High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore")));
+        scoreDiv.innerHTML = "High Score : " + parseInt(localStorage.getItem("duckDerbyBestScore"));
     }
 }
 
