@@ -47,43 +47,32 @@ Duck = function(){
 
 
 function showOverlay(overlayType) {
+    var overlay = document.createElement("div");
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    document.body.appendChild(overlay);
 
-   var overlay = document.createElement("div");
-   overlay.setAttribute("id","overlay");
-   overlay.setAttribute("class", "overlay");
-   document.body.appendChild(overlay);
+    var message_div = document.createElement("div");
+    message_div.setAttribute("id", "mdiv");
+    message_div.setAttribute("class", "center");
+    overlay.appendChild(message_div);
 
-	var message_div = document.createElement("div");
-	message_div.setAttribute("id","mdiv");
-    message_div.setAttribute("class","center");
-	overlay.appendChild(message_div);
+    var actionButton = document.createElement("input");
+    actionButton.setAttribute("type", "button");
 
-
-   var actionButton = document.createElement("input");
-   actionButton.setAttribute("type","button");
-	
-   actionButton.setAttribute("id","but");
-   actionButton.setAttribute("class","btn center");
-   if(overlayType=="continue"){
-   actionButton.setAttribute("onclick","reload()");
-   actionButton.setAttribute("value","Continue");
-   document.getElementById("mdiv").innerHTML = "Congratulations!! you Saved your ducks";
-   
-   
-	}
-   else
-   {
-   actionButton.setAttribute("onclick","finalView()");
-   actionButton.setAttribute("value","Play Again");
-	document.getElementById("mdiv").innerHTML = "You Lost in this level!! But there is always next time :) !!";
-
-   
-   }
-   overlay.appendChild(actionButton);
+    actionButton.setAttribute("id", "but");
+    actionButton.setAttribute("class", "btn center");
+    if (overlayType == "continue") {
+        actionButton.setAttribute("onclick", "reload()");
+        actionButton.setAttribute("value", "Continue");
+        document.getElementById("mdiv").innerHTML = "Congratulations!! You saved your ducks";
+    } else {
+        actionButton.setAttribute("onclick", "finalView()");
+        actionButton.setAttribute("value", "Play Again");
+        document.getElementById("mdiv").innerHTML = "You lost in this level!! But there is always next time :) !!";
+    }
+    overlay.appendChild(actionButton);
 }
-   
-
-
 
 function removeIfAnyExtraneousDivs() {
 	var overlay = document.getElementById('overlay');
@@ -91,16 +80,14 @@ function removeIfAnyExtraneousDivs() {
 		var but = document.getElementById('but');
 		var message_div = document.getElementById('mdiv');
 		if(but){
-		overlay.removeChild(but);
+		    overlay.removeChild(but);
 		}
 		if(message_div){
-		overlay.removeChild(message_div);
+		    overlay.removeChild(message_div);
 		}
 		document.body.removeChild(overlay);
 	}
 }
-
-
 
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -196,8 +183,6 @@ function render(){
             //keeps ducks out of the pond while they waddle around
             ducky.duck.body.velocity.x *= -1;
             ducky.duck.body.velocity.y *= -1;
-        } else {
-
         }
     }
 }
@@ -248,12 +233,11 @@ function updateBestScore() {
 		if(!prevBestScore) {
 			prevBestScore = 0;
 			localStorage.setItem("duckDerbyBestScore",0);
-			
 		}
 		
 		if(score > prevBestScore)
 		{
-			localStorage.setItem("duckDerbyBestScore", (score));
+			localStorage.setItem("duckDerbyBestScore", score);
 		}
 	} else {
 		// Sorry! No local Storage support..
