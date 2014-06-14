@@ -305,7 +305,6 @@ function showOverlay(overlayType) {
             recordScore = false;
         }
         random = Math.round(Math.random() * (facts.length-1));
-        console.log((facts.length-1))
         overlay.appendChild(createOverlayDiv("factsdiv"));
         document.getElementById("factsdiv").innerHTML = "Fun Fact: " + facts[random];
     }
