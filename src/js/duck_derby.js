@@ -43,13 +43,15 @@ var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
-var numOfDucks = 10;
+var numOfDucks = 1;
 var pond;
 var ducks;
 var quack;
+var newTotal;
 var score = 0;
 var roundScore = 0;
-var time = 10;
+var time = 3;
+var continueGame = true;
 var duckVelocity = 45;
 var duckScale = 0.4;
 var duckScalePickedUp = duckScale * 1.5;
@@ -57,18 +59,28 @@ var objects = 0;
 var scoreText = "Score: " + score;
 var timeText = "Time: " + time;
 var timer = new Phaser.Timer(game);
-var level = {
-    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
-    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
-}; //levels aren't implemented yet
+
+var level;
+if (localStorage.getItem("gameLevel")) {
+    level = parseInt(localStorage.getItem("gameLevel"))
+} else {
+    level = 1;
+}
+//{
+//    1: {numOfDucks: 10, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100},
+//    2: {numOfDucks: 15, duckVelocity: 45, time: 30, objects: 0, duckScale: 0.4, pondRadius: 100}
+//}; //levels aren't implemented yet
 
 function preload() {
     game.load.image('duck', 'img/duck.png');
     game.load.audio('quack', 'audio/quack.wav');
+    game.load.image('continueButton','img/continue.png');
+    game.load.image('playAgainButton','img/playAgain.png');
 }
 
 function create() {
     setupTextBar();
+    setupLevel();
     pond = game.add.graphics(0, 0);
     game.stage.backgroundColor = "#4C8F00";
     quack = game.add.audio('quack');
@@ -123,11 +135,16 @@ function setupTextBar() {
     timeText = game.add.text(w-200, 0, timeText, style); //sets the time 200px from the right of the edge of the screen
 }
 
+function setupLevel() {
+    numOfDucks = level;
+}
+
 function updateTimeCounter() {
     time--;
     timeText.setText("Time: " + time);
     if (time <= 0) {
         timeText.setText("Time Up!");
+        continueGame = false;
         gameEnd();
     }
 }
@@ -179,4 +196,31 @@ function gameEnd() {
 	// This function updates the best score after each run of the game.
 	updateBestScore();
     scoreText.setText("Total Score: " + score + " Best Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
+    newTotal = score + parseInt(localStorage.getItem("totalScore"));
+    localStorage.setItem("totalScore", (newTotal));
+    scoreText.setText("Total Score: " + newTotal);
+    //game.add.button();
+    roundScore = 0;
+    var style = { font: "35px Arial", fill: "yellow", align: "center" };
+    var text;
+    if (continueGame) {
+        text = "Congratulations! Your ducks are safe.";
+        game.add.button(game.world.centerX - 95, 400, 'continueButton', reload, this, 2, 1, 0);
+    } else {
+        text = "You finished with a total score of " + newTotal;
+        game.add.button(game.world.centerX - 95, 400, 'playAgainButton', finalView, this, 2, 1, 0);
+    }
+    game.add.text(0, game.world.centerY-300, text, style);
+
+}
+
+function reload() {
+    localStorage.setItem("gameLevel", (level + 1));
+    location.reload();
+}
+
+function finalView() {
+    localStorage.removeItem("totalScore");
+    localStorage.removeItem("gameLevel");
+    reload();
 }
