@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
@@ -28,6 +29,12 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
         playButton.setOnClickListener(this);
         websiteButton.setOnClickListener(this);
         donateButton.setOnClickListener(this);
+
+        ImageView banner = (ImageView)findViewById(R.id.logo_image);
+        banner.setImageResource(R.drawable.duck_derby_banner);
+
+        ImageView gameImage = (ImageView)findViewById(R.id.game_image);
+        gameImage.setImageResource(R.drawable.duck_derby_logo);
     }
 
     @Override

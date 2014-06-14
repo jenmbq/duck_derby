@@ -5,8 +5,5 @@
         parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
     </style>
-    <style name="NoTitleBar">
-
-    </style>
 
 </resources>

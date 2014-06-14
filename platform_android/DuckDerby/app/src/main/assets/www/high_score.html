@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Duck Derby High Score</title>
+<style>
+
+.center {
+    margin: auto;
+    width: 30%;
+    background-color: #D7DF01;
+    padding: 10px 10px 20px 20px;
+    
+  border: 1px solid black ;
+
+}
+
+.btn {
+
+ 
+  border : none;
+  font-family: Arial;
+  color: #000000;
+  font-size: 23px;
+  background: #D7DF01;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #dffc3c;
+  text-decoration: none;
+}
+
+</style>
+    <script type="text/javascript">
+		window.onload = function () {
+        var highScore = localStorage.getItem("duckDerbyBestScore");
+       
+		if(!highScore) {
+			highScore = 0;
+		}
+
+        document.getElementById("bestscore").innerHTML = highScore;
+}
+
+function onReset() {
+ 	localStorage.setItem("duckDerbyBestScore",0);
+	 document.getElementById("bestscore").innerHTML = localStorage.getItem("duckDerbyBestScore") ;
+}
+    </script>
+
+
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body bgcolor='#4C8F00'>
+<div class="center">
+    <h1 align='center'><ins>Best Score</ins></h1>
+    <div align='center' id="bestscore"></div>
+</div>
+<div align="center">
+<button class="btn" onclick='onReset()'>Reset Best Score</button>
+</div>
+</body>
+</html>
