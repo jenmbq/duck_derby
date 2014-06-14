@@ -1,3 +1,8 @@
+// just the test code
+
+
+
+
 pondLocation = [190, 200];
 pondRadius = 90;
 Duck = function(){
@@ -40,6 +45,63 @@ Duck = function(){
     this.duck.events.onInputUp.add(self.duck.touchUp, this);
 };
 
+
+function showOverlay(overlayType) {
+
+   var overlay = document.createElement("div");
+   overlay.setAttribute("id","overlay");
+   overlay.setAttribute("class", "overlay");
+   document.body.appendChild(overlay);
+
+	var message_div = document.createElement("div");
+	message_div.setAttribute("id","mdiv");
+    message_div.setAttribute("class","center");
+	overlay.appendChild(message_div);
+
+
+   var actionButton = document.createElement("input");
+   actionButton.setAttribute("type","button");
+	
+   actionButton.setAttribute("id","but");
+   actionButton.setAttribute("class","btn center");
+   if(overlayType=="continue"){
+   actionButton.setAttribute("onclick","reload()");
+   actionButton.setAttribute("value","Continue");
+   document.getElementById("mdiv").innerHTML = "Congratulations!! you Saved your ducks";
+   
+   
+	}
+   else
+   {
+   actionButton.setAttribute("onclick","finalView()");
+   actionButton.setAttribute("value","Play Again");
+	document.getElementById("mdiv").innerHTML = "You Lost in this level!! But there is always next time :) !!";
+
+   
+   }
+   overlay.appendChild(actionButton);
+}
+   
+
+
+
+function removeIfAnyExtraneousDivs() {
+	var overlay = document.getElementById('overlay');
+  	if(overlay) {
+		var but = document.getElementById('but');
+		var message_div = document.getElementById('mdiv');
+		if(but){
+		overlay.removeChild(but);
+		}
+		if(message_div){
+		overlay.removeChild(message_div);
+		}
+		document.body.removeChild(overlay);
+	}
+}
+
+
+
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
@@ -51,7 +113,7 @@ var quack;
 var newTotal;
 var score = 0;
 var roundScore = 0;
-var time = 3;
+var time = 20;
 var continueGame = true;
 var duckVelocity = 45;
 var duckScale = 0.4;
@@ -218,11 +280,13 @@ function gameEnd() {
     var style = { font: "15px Arial", fill: "yellow", align: "center" };
     var endText;
     if (continueGame) {
-        endText = "Congratulations! Your ducks are safe.";
-        game.add.button(game.world.centerX - (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
+		showOverlay("continue");
+       // endText = "Congratulations! Your ducks are safe.";
+      //  game.add.button(game.world.centerX - (continueButton.width / 2), 400, 'continueButton', reload, this, 2, 1, 0);
     } else {
-        endText = "You finished with a total score of " + newTotal + ".";
-        game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
+		showOverlay("playagain");
+        //endText = "You finished with a total score of " + newTotal + ".";
+        //game.add.button(game.world.centerX - (againButton.width / 2), 400, 'playAgainButton', finalView, this, 2, 1, 0);
         scoreText.setText("High Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
     }
     game.add.text(0, game.world.centerY-100, endText, style);
@@ -230,11 +294,13 @@ function gameEnd() {
 }
 
 function reload() {
+	removeIfAnyExtraneousDivs();
     localStorage.setItem("gameLevel", (level + 1));
     location.reload();
 }
 
 function finalView() {
+	removeIfAnyExtraneousDivs();
     localStorage.removeItem("totalScore");
     localStorage.removeItem("gameLevel");
     location.reload(true);
