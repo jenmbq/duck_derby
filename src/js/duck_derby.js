@@ -144,6 +144,27 @@ function duckScore() {
         gameEnd();
     }
 }
+// This function updates the localstorage to the current best score
+function updateBestScore() {
+	if(typeof(Storage) !== "undefined") {
+		var prevBestScore = parseInt(localStorage.getItem("duckDerbyBestScore"));
+	
+		//check if the bestScore variable is available in 	
+		if(!prevBestScore) {
+			prevBestScore = 0;
+			localStorage.setItem("duckDerbyBestScore",0);
+			
+		}
+		
+		if(score > prevBestScore)
+		{
+			localStorage.setItem("duckDerbyBestScore", (score));
+		}
+	} else {
+		// Sorry! No local Storage support..
+		alert('this version of local web browser does not support local storage');
+	}	
+}
 
 function gameEnd() {
     timer.stop(true);
@@ -155,7 +176,7 @@ function gameEnd() {
     }
     //adjusting the final scores
     score += roundScore;
-    var newTotal = score + parseInt(localStorage.getItem("totalScore"));
-    localStorage.setItem("totalScore", (newTotal));
-    scoreText.setText("Total Score: " + newTotal);
+	// This function updates the best score after each run of the game.
+	updateBestScore();
+    scoreText.setText("Total Score: " + score + " Best Score :" + parseInt(localStorage.getItem("duckDerbyBestScore")));
 }

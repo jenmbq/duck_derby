@@ -3,8 +3,17 @@
     <meta charset="UTF-8" />
     <title>Duck Derby High Score</title>
     <script type="text/javascript">
-        document.getElementById("results").innerHTML = localStorage.getItem("totalScore")
+		window.onload = function () {
+        var highScore = localStorage.getItem("duckDerbyBestScore");
+       
+		if(!highScore) {
+			highScore = '--';
+		}
+
+        document.getElementById("bestscore").innerHTML = highScore;
+}
     </script>
+
 
     <style type="text/css">
         body {
@@ -13,7 +22,7 @@
     </style>
 </head>
 <body>
-    <h1>High Scores</h1>
-    <div id="results"></div>
+    <h1>Best Score</h1>
+    <div id="bestscore"></div>
 </body>
 </html>
