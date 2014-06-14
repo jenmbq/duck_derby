@@ -5,13 +5,15 @@
     <style type="text/css">
         body {
             margin: 0;
+            font-family:arial;
+            color:#333;
         }
 
         .center {
             text-align: center;
             vertical-align: middle;
             margin: auto;
-            background-color: #FACC2E;
+            background-color: #FFF000;
             padding: 10px 20px 10px 20px;
             border: 1px solid black ;
             z-index: 11;
@@ -30,10 +32,9 @@
             margin: 0 auto;
             display:block;
             border : none;
-            font-family: Arial;
             color: #000000;
             font-size: 23px;
-            background: #D7DF01;
+            background: #FFF000;
             padding: 10px 20px 10px 20px;
             text-decoration: none;
         }
@@ -45,12 +46,21 @@
         #but{
             margin-top:100px;
         }
+        footer{position:absolute;bottom:0;}
+        footer div{display:inline-block;}
 
     </style>
 
-    <script type="text/javascript" src="js/phaser.js"></script>
-    <script type="text/javascript" src="js/duck_derby.js"></script>
+
 </head>
 <body>
+<footer>
+    <div id="level">Level:1</div>
+    <div id="score">Score:0</div>
+    <div id="timer">Time:20</div>
+</footer>
+<script type="text/javascript" src="js/fastClick.js"></script>
+<script type="text/javascript" src="js/phaser.js"></script>
+<script type="text/javascript" src="js/duck_derby.js"></script>
 </body>
 </html>
