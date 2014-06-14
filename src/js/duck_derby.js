@@ -81,6 +81,11 @@ var timer = new Phaser.Timer(game);
 if (typeof(Storage) === "undefined") {
     alert('This version of local web browser does not support local storage');
 }
+
+//setting the default sound as on
+if(localStorage.getItem("duckDerbySoundOn") == null){
+	localStorage.setItem("duckDerbySoundOn",'true');
+}
 var soundOn = localStorage.getItem("duckDerbySoundOn") == 'true';
 var recordScore = false;
 var facts = ["YESS stands for Youth Emergency Services and Shelter.",
