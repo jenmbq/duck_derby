@@ -34,18 +34,18 @@
 </style>
     <script type="text/javascript">
 	window.onload = function () {
-        var highScore = localStorage.getItem("duckDerbyBestScore");
+        var highScore = localStorage.getItem("duckDerbyhighscore");
        
 		if(!highScore) {
 			highScore = 0;
 		}
 
-        document.getElementById("bestscore").innerHTML = highScore;
+        document.getElementById("highscore").innerHTML = highScore;
     };
 
     function onReset() {
-        localStorage.setItem("duckDerbyBestScore",0);
-         document.getElementById("bestscore").innerHTML = localStorage.getItem("duckDerbyBestScore") ;
+        localStorage.setItem("duckDerbyhighscore", 0);
+         document.getElementById("highscore").innerHTML = localStorage.getItem("duckDerbyhighscore") ;
     }
     </script>
 
@@ -58,11 +58,11 @@
 </head>
 <body bgcolor='#4C8F00'>
 <div class="center">
-    <h1 align='center'><ins>Best Score</ins></h1>
-    <div align='center' id="bestscore"></div>
+    <h1 align='center'><ins>High Score</ins></h1>
+    <div align='center' id="highscore"></div>
 </div>
 <div align="center">
-<button class="btn" onclick='onReset()'>Reset Best Score</button>
+<button class="btn" onclick='onReset()'>Reset High Score</button>
 </div>
 </body>
 </html>
