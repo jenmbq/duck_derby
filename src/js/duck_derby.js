@@ -101,12 +101,12 @@ function create() {
     quack = game.add.audio('quack');
     ducks = [];
     for (var i = 0; i < numOfDucks;i++) {
-	    var newDuck = new Duck();
-		//if duck is created within the pond then keep changing the position till the duck is not in the pond anymore.
- 		while(isDuckWithinPond(newDuck)) {
-			newDuck.duck.position.x = game.world.randomX;
-			newDuck.duck.position.y = game.world.randomY;
-		}
+        var newDuck = new Duck();
+        //if duck is created within the pond then keep changing the position till the duck is not in the pond anymore.
+        while(isDuckWithinPond(newDuck)) {
+            newDuck.duck.position.x = game.world.randomX;
+            newDuck.duck.position.y = game.world.randomY;
+        }
         ducks.push(newDuck);
     }
 }
@@ -142,8 +142,8 @@ function render() {
         // flip the duck 25% of the time
         if (Math.random()<.015 && game.isRunning)
             ducky.duck.scale.x *= -1;
-		//we start with zero score and depending upon whether a particular duck is inside the pond or not asign the score.
-		ducky.duck.score=0;
+        //we start with zero score and depending upon whether a particular duck is inside the pond or not asign the score.
+        ducky.duck.score=0;
 
         var duckWithinPond = (x - center_x)*(x - center_x) + (y - center_y) * (y - center_y);
         if(duckWithinPond < (radius + 5) * (radius + 5)){
@@ -312,29 +312,29 @@ function showOverlay(overlayType) {
 }
 
 function reload() {
-	removeIfAnyExtraneousDivs();
+    removeIfAnyExtraneousDivs();
     localStorage.setItem("gameLevel", (level + 1));
     location.reload();
 }
 
 function finalView() {
-	removeIfAnyExtraneousDivs();
+    removeIfAnyExtraneousDivs();
     localStorage.setItem("totalScore", 0);
     localStorage.setItem("gameLevel", 1);
     location.reload(true);
 }
 
 function removeIfAnyExtraneousDivs() {
-	var overlay = document.getElementById('overlay');
-  	if(overlay) {
+    var overlay = document.getElementById('overlay');
+    if(overlay) {
         var divsToRemove = ["but",'mdiv','factsdiv','highscdiv'];
         for (var i = 0; i < divsToRemove.length; i++){
             if(document.getElementById(divsToRemove[i])){
                 overlay.removeChild( document.getElementById(divsToRemove[i]) );
             }
         }
-		document.body.removeChild(overlay);
-	}
+        document.body.removeChild(overlay);
+    }
 }
 
 function toggleSound() {
@@ -347,4 +347,3 @@ function collisionHandler(){
         quack.play();
     }
 }
-
