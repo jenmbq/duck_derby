@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="14A238x" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="YESSViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="DuckFootRight" translatesAutoresizingMaskIntoConstraints="NO" id="rae-r4-s3a">
+                                <rect key="frame" x="90" y="401" width="141" height="167"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.2116973892" green="0.93900730300000002" blue="0.2751997833" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <connections>
+                        <outlet property="feetImageView" destination="rae-r4-s3a" id="RVY-gA-7z9"/>
+                        <segue destination="pRI-4Z-vJB" kind="modal" identifier="IntroToWebView" modalTransitionStyle="flipHorizontal" id="fvl-70-cGE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="257" y="106"/>
+        </scene>
+        <!--Game Container View Controller-->
+        <scene sceneID="7Uk-9S-RFY">
+            <objects>
+                <viewController id="pRI-4Z-vJB" customClass="YESSGameContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WTY-Dd-ufM"/>
+                        <viewControllerLayoutGuide type="bottom" id="vB9-oH-H4y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6KV-Pd-kUT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView appearanceType="aqua" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Itu-Xh-ZKV">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                            <activityIndicatorView hidden="YES" appearanceType="aqua" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="iDW-a5-Meb">
+                                <rect key="frame" x="150" y="274" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Itu-Xh-ZKV" secondAttribute="trailing" id="1B4-W0-K9F"/>
+                            <constraint firstAttribute="centerX" secondItem="iDW-a5-Meb" secondAttribute="centerX" id="4Cv-RU-Vk2"/>
+                            <constraint firstItem="Itu-Xh-ZKV" firstAttribute="top" secondItem="6KV-Pd-kUT" secondAttribute="top" id="Gzq-Fx-8zW"/>
+                            <constraint firstItem="iDW-a5-Meb" firstAttribute="top" secondItem="WTY-Dd-ufM" secondAttribute="bottom" constant="254" id="HSN-vQ-GYk"/>
+                            <constraint firstAttribute="bottom" secondItem="Itu-Xh-ZKV" secondAttribute="bottom" id="Hoc-fU-A82"/>
+                            <constraint firstItem="iDW-a5-Meb" firstAttribute="leading" secondItem="6KV-Pd-kUT" secondAttribute="leading" constant="150" id="PSc-9c-4pu"/>
+                            <constraint firstItem="Itu-Xh-ZKV" firstAttribute="leading" secondItem="6KV-Pd-kUT" secondAttribute="leading" id="SiQ-S4-L1u"/>
+                            <constraint firstAttribute="centerY" secondItem="iDW-a5-Meb" secondAttribute="centerY" id="nZ9-Zb-P3b"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="ul6-0P-gSG"/>
+                    <connections>
+                        <outlet property="gameIndicatorView" destination="iDW-a5-Meb" id="Mxd-3u-G4a"/>
+                        <outlet property="gameWebView" destination="Itu-Xh-ZKV" id="TBz-b6-Mjr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r7n-qb-DN1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="644" y="106"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="DuckFootRight" width="478" height="569"/>
+    </resources>
+    <color key="tintColor" red="0.21169738916993061" green="0.93900730298913038" blue="0.27519978327243094" alpha="1" colorSpace="calibratedRGB"/>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
