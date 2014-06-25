@@ -1,5 +1,6 @@
 package game.duckderby.yessiowa.org.duckderby3;
 
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
@@ -33,6 +34,7 @@ public class Game extends ActionBarActivity {
         webView.getSettings().setAllowFileAccess(true);
 
         String file = "File:///android_asset/www/index.html";
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
 
         class JsObject {
@@ -41,6 +43,7 @@ public class Game extends ActionBarActivity {
 
             @JavascriptInterface
             public void goBack(){
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 finish();
             }
         }
