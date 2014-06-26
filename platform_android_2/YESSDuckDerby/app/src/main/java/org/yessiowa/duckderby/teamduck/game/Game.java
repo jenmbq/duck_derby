@@ -1,4 +1,4 @@
-package game.duckderby.yessiowa.org.duckderby3;
+package org.yessiowa.duckderby.teamduck.game;
 
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;

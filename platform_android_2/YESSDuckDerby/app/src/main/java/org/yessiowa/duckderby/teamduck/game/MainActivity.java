@@ -1,4 +1,4 @@
-package game.duckderby.yessiowa.org.duckderby3;
+package org.yessiowa.duckderby.teamduck.game;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import game.duckderby.yessiowa.org.duckderby3.R;
 
 
 public class MainActivity extends ActionBarActivity {
