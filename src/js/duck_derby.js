@@ -291,7 +291,11 @@ function showOverlay(overlayType) {
 
     overlay.appendChild(createOverlayDiv("mdiv"));
 
-
+    var homeButton = document.createElement("a");
+    homeButton.setAttribute("href","http://duckderbyapp.com");
+    homeButton.setAttribute("id","menu-button");
+    homeButton.setAttribute("class","btn");
+    homeButton.innerHTML = "Main Menu";
     var actionButton = document.createElement("input");
     actionButton.setAttribute("type", "button");
 
@@ -326,6 +330,7 @@ function showOverlay(overlayType) {
 		//overlay.appendChild(fbButton);
     }
     overlay.appendChild(actionButton);
+    overlay.appendChild(homeButton);
 }
 
 function reload() {

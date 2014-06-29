@@ -1,0 +1,502 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A4058665194A8C720020A0E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058664194A8C720020A0E5 /* Foundation.framework */; };
+		A4058667194A8C720020A0E5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058666194A8C720020A0E5 /* CoreGraphics.framework */; };
+		A4058669194A8C720020A0E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058668194A8C720020A0E5 /* UIKit.framework */; };
+		A405866F194A8C720020A0E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A405866D194A8C720020A0E5 /* InfoPlist.strings */; };
+		A4058671194A8C720020A0E5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4058670194A8C720020A0E5 /* main.m */; };
+		A4058675194A8C720020A0E5 /* YESSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4058674194A8C720020A0E5 /* YESSAppDelegate.m */; };
+		A4058678194A8C720020A0E5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4058676194A8C720020A0E5 /* Main_iPhone.storyboard */; };
+		A405867B194A8C720020A0E5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4058679194A8C720020A0E5 /* Main_iPad.storyboard */; };
+		A405867E194A8C720020A0E5 /* YESSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A405867D194A8C720020A0E5 /* YESSViewController.m */; };
+		A4058680194A8C720020A0E5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A405867F194A8C720020A0E5 /* Images.xcassets */; };
+		A4058687194A8C720020A0E5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058686194A8C720020A0E5 /* XCTest.framework */; };
+		A4058688194A8C720020A0E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058664194A8C720020A0E5 /* Foundation.framework */; };
+		A4058689194A8C720020A0E5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4058668194A8C720020A0E5 /* UIKit.framework */; };
+		A4058691194A8C720020A0E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A405868F194A8C720020A0E5 /* InfoPlist.strings */; };
+		A4058693194A8C720020A0E5 /* QuackyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4058692194A8C720020A0E5 /* QuackyTests.m */; };
+		A405869E194A92BC0020A0E5 /* YESSGameContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A405869D194A92BC0020A0E5 /* YESSGameContainerViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A405868A194A8C720020A0E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4058659194A8C710020A0E5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4058660194A8C710020A0E5;
+			remoteInfo = Quacky;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A4058661194A8C710020A0E5 /* Quacky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quacky.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4058664194A8C720020A0E5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A4058666194A8C720020A0E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A4058668194A8C720020A0E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A405866C194A8C720020A0E5 /* Quacky-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Quacky-Info.plist"; sourceTree = "<group>"; };
+		A405866E194A8C720020A0E5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A4058670194A8C720020A0E5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A4058672194A8C720020A0E5 /* Quacky-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Quacky-Prefix.pch"; sourceTree = "<group>"; };
+		A4058673194A8C720020A0E5 /* YESSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YESSAppDelegate.h; sourceTree = "<group>"; };
+		A4058674194A8C720020A0E5 /* YESSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YESSAppDelegate.m; sourceTree = "<group>"; };
+		A4058677194A8C720020A0E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		A405867A194A8C720020A0E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		A405867C194A8C720020A0E5 /* YESSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YESSViewController.h; sourceTree = "<group>"; };
+		A405867D194A8C720020A0E5 /* YESSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YESSViewController.m; sourceTree = "<group>"; };
+		A405867F194A8C720020A0E5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A4058685194A8C720020A0E5 /* QuackyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuackyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4058686194A8C720020A0E5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		A405868E194A8C720020A0E5 /* QuackyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QuackyTests-Info.plist"; sourceTree = "<group>"; };
+		A4058690194A8C720020A0E5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A4058692194A8C720020A0E5 /* QuackyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuackyTests.m; sourceTree = "<group>"; };
+		A405869C194A92BC0020A0E5 /* YESSGameContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YESSGameContainerViewController.h; sourceTree = "<group>"; };
+		A405869D194A92BC0020A0E5 /* YESSGameContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YESSGameContainerViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A405865E194A8C710020A0E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4058667194A8C720020A0E5 /* CoreGraphics.framework in Frameworks */,
+				A4058669194A8C720020A0E5 /* UIKit.framework in Frameworks */,
+				A4058665194A8C720020A0E5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4058682194A8C720020A0E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4058687194A8C720020A0E5 /* XCTest.framework in Frameworks */,
+				A4058689194A8C720020A0E5 /* UIKit.framework in Frameworks */,
+				A4058688194A8C720020A0E5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4058658194A8C710020A0E5 = {
+			isa = PBXGroup;
+			children = (
+				A405866A194A8C720020A0E5 /* Quacky */,
+				A405868C194A8C720020A0E5 /* QuackyTests */,
+				A4058663194A8C710020A0E5 /* Frameworks */,
+				A4058662194A8C710020A0E5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A4058662194A8C710020A0E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4058661194A8C710020A0E5 /* Quacky.app */,
+				A4058685194A8C720020A0E5 /* QuackyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A4058663194A8C710020A0E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A4058664194A8C720020A0E5 /* Foundation.framework */,
+				A4058666194A8C720020A0E5 /* CoreGraphics.framework */,
+				A4058668194A8C720020A0E5 /* UIKit.framework */,
+				A4058686194A8C720020A0E5 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A405866A194A8C720020A0E5 /* Quacky */ = {
+			isa = PBXGroup;
+			children = (
+				A405869F194AA49E0020A0E5 /* lib */,
+				A4058673194A8C720020A0E5 /* YESSAppDelegate.h */,
+				A4058674194A8C720020A0E5 /* YESSAppDelegate.m */,
+				A4058676194A8C720020A0E5 /* Main_iPhone.storyboard */,
+				A4058679194A8C720020A0E5 /* Main_iPad.storyboard */,
+				A405867C194A8C720020A0E5 /* YESSViewController.h */,
+				A405867D194A8C720020A0E5 /* YESSViewController.m */,
+				A405869C194A92BC0020A0E5 /* YESSGameContainerViewController.h */,
+				A405869D194A92BC0020A0E5 /* YESSGameContainerViewController.m */,
+				A405867F194A8C720020A0E5 /* Images.xcassets */,
+				A405866B194A8C720020A0E5 /* Supporting Files */,
+			);
+			path = Quacky;
+			sourceTree = "<group>";
+		};
+		A405866B194A8C720020A0E5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A405866C194A8C720020A0E5 /* Quacky-Info.plist */,
+				A405866D194A8C720020A0E5 /* InfoPlist.strings */,
+				A4058670194A8C720020A0E5 /* main.m */,
+				A4058672194A8C720020A0E5 /* Quacky-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A405868C194A8C720020A0E5 /* QuackyTests */ = {
+			isa = PBXGroup;
+			children = (
+				A4058692194A8C720020A0E5 /* QuackyTests.m */,
+				A405868D194A8C720020A0E5 /* Supporting Files */,
+			);
+			path = QuackyTests;
+			sourceTree = "<group>";
+		};
+		A405868D194A8C720020A0E5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A405868E194A8C720020A0E5 /* QuackyTests-Info.plist */,
+				A405868F194A8C720020A0E5 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A405869F194AA49E0020A0E5 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4058660194A8C710020A0E5 /* Quacky */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4058696194A8C720020A0E5 /* Build configuration list for PBXNativeTarget "Quacky" */;
+			buildPhases = (
+				A405865D194A8C710020A0E5 /* Sources */,
+				A405865E194A8C710020A0E5 /* Frameworks */,
+				A405865F194A8C710020A0E5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Quacky;
+			productName = Quacky;
+			productReference = A4058661194A8C710020A0E5 /* Quacky.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A4058684194A8C720020A0E5 /* QuackyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4058699194A8C720020A0E5 /* Build configuration list for PBXNativeTarget "QuackyTests" */;
+			buildPhases = (
+				A4058681194A8C720020A0E5 /* Sources */,
+				A4058682194A8C720020A0E5 /* Frameworks */,
+				A4058683194A8C720020A0E5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A405868B194A8C720020A0E5 /* PBXTargetDependency */,
+			);
+			name = QuackyTests;
+			productName = QuackyTests;
+			productReference = A4058685194A8C720020A0E5 /* QuackyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A4058659194A8C710020A0E5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = YESS;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = YESS;
+				TargetAttributes = {
+					A4058684194A8C720020A0E5 = {
+						TestTargetID = A4058660194A8C710020A0E5;
+					};
+				};
+			};
+			buildConfigurationList = A405865C194A8C710020A0E5 /* Build configuration list for PBXProject "Quacky" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A4058658194A8C710020A0E5;
+			productRefGroup = A4058662194A8C710020A0E5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4058660194A8C710020A0E5 /* Quacky */,
+				A4058684194A8C720020A0E5 /* QuackyTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A405865F194A8C710020A0E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A405867B194A8C720020A0E5 /* Main_iPad.storyboard in Resources */,
+				A4058680194A8C720020A0E5 /* Images.xcassets in Resources */,
+				A4058678194A8C720020A0E5 /* Main_iPhone.storyboard in Resources */,
+				A405866F194A8C720020A0E5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4058683194A8C720020A0E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4058691194A8C720020A0E5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A405865D194A8C710020A0E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A405869E194A92BC0020A0E5 /* YESSGameContainerViewController.m in Sources */,
+				A4058675194A8C720020A0E5 /* YESSAppDelegate.m in Sources */,
+				A405867E194A8C720020A0E5 /* YESSViewController.m in Sources */,
+				A4058671194A8C720020A0E5 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4058681194A8C720020A0E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4058693194A8C720020A0E5 /* QuackyTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A405868B194A8C720020A0E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4058660194A8C710020A0E5 /* Quacky */;
+			targetProxy = A405868A194A8C720020A0E5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A405866D194A8C720020A0E5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A405866E194A8C720020A0E5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A4058676194A8C720020A0E5 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4058677194A8C720020A0E5 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		A4058679194A8C720020A0E5 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A405867A194A8C720020A0E5 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		A405868F194A8C720020A0E5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4058690194A8C720020A0E5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A4058694194A8C720020A0E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A4058695194A8C720020A0E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4058697194A8C720020A0E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Quacky/Quacky-Prefix.pch";
+				INFOPLIST_FILE = "Quacky/Quacky-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A4058698194A8C720020A0E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Quacky/Quacky-Prefix.pch";
+				INFOPLIST_FILE = "Quacky/Quacky-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		A405869A194A8C720020A0E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Quacky.app/Quacky";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Quacky/Quacky-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "QuackyTests/QuackyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		A405869B194A8C720020A0E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Quacky.app/Quacky";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Quacky/Quacky-Prefix.pch";
+				INFOPLIST_FILE = "QuackyTests/QuackyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A405865C194A8C710020A0E5 /* Build configuration list for PBXProject "Quacky" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4058694194A8C720020A0E5 /* Debug */,
+				A4058695194A8C720020A0E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4058696194A8C720020A0E5 /* Build configuration list for PBXNativeTarget "Quacky" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4058697194A8C720020A0E5 /* Debug */,
+				A4058698194A8C720020A0E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4058699194A8C720020A0E5 /* Build configuration list for PBXNativeTarget "QuackyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A405869A194A8C720020A0E5 /* Debug */,
+				A405869B194A8C720020A0E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A4058659194A8C710020A0E5 /* Project object */;
+}

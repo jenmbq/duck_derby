@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <color name="duckderby_buttonplay_color">#F0DD0C</color>
+    <color name="duckderby_background_color">#1BC263</color>
+
+
+
+
+</resources>

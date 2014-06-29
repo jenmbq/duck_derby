@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Duck Derby</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            font-family:arial;
+            color:#333;
+        }
+
+        .center {
+            text-align: center;
+            vertical-align: middle;
+            margin: auto;
+            background-color: #FFF000;
+            padding: 10px 20px 10px 20px;
+            border: 1px solid black ;
+            z-index: 11;
+
+        }
+
+        section.overlay{
+            display:none;
+        }
+
+        .overlay{
+            background-color: rgba(0,0,0,.7);
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+
+        .btn {
+            margin: 0 auto;
+            display:block;
+            border : none;
+            color: #000000;
+            font-size: 23px;
+            background: #FFF000;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #dffc3c;
+            text-decoration: none;
+        }
+        #but{
+            margin-top:100px;
+        }
+        #menu-button{margin-top:10px;display:none;}
+
+        footer{
+            position:absolute;
+            bottom:0;
+            color:yellow;
+            font-size:24px;
+            background-color: #19C5FF;
+            width: 100%;
+        }
+        footer div{display:inline-block;}
+
+    </style>
+
+
+</head>
+<body>
+<div id="fb-root"></div>
+<footer>
+    <div id="level"></div>
+    <div id="score"></div>
+    <div id="timer"></div>
+</footer>
+
+
+<script type="text/javascript" src="js/fastclick.js"></script>
+<script type="text/javascript" src="js/phaser.js"></script>
+<script type="text/javascript" src="js/duck_derby.js"></script>
+<script type="text/javascript">
+//    (function() {
+//        var e = document.createElement('script');
+//        // replacing with an older version until FB fixes the cancel-login bug
+//        //e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js'; --this is the code they were using
+//        //e.src = 'scripts/all.js';
+//        e.src = 'http://connect.facebook.net/en_US/all.js'
+//        e.async = true;
+//        document.getElementById('fb-root').appendChild(e);
+//    }());
+//
+//    window.fbAsyncInit = function()
+//    {
+//        FB.init({
+//            appId  : '705901282803977',
+//            status : true, // check login status
+//            cookie : true, // enable cookies to allow the server to access the session
+//            xfbml  : true , // parse XFBML
+//            oauth : true // Enable oauth authentication
+//        });
+//
+//
+//    };
+</script>
+</body>
+</html>
