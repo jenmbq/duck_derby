@@ -1,0 +1,432 @@
+package org.yess.duckderby.screens;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.yess.framework.Game;
+import org.yess.framework.Image;
+import org.yess.framework.Screen;
+import org.yess.duckderby.game.Assets;
+import org.yess.duckderby.game.DuckDerbyGame;
+import org.yess.duckderby.game.models.Duck;
+import org.yess.duckderby.game.models.Pond;
+import org.yess.duckderby.game.models.components.Speed;
+import org.yess.duckderby.gameworld.GameRenderer;
+import org.yess.duckderby.gameworld.GameWorld;
+import org.yess.framework.Graphics;
+import org.yess.framework.Input.TouchEvent;
+
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.Log;
+
+public class GameScreen extends Screen {
+
+	enum GameState {
+		Ready, Running, Paused, GameOver
+	}
+
+	private GameWorld world;
+	private GameRenderer renderer;
+
+	private final String TAG = GameScreen.class.getSimpleName();
+
+	private GameState state = GameState.Ready;
+	private ArrayList<Duck> ducks;
+	private ArrayList<Image> duckCharacters;
+	private Pond pond;
+	private Image pondImage;
+
+	private Random random;
+	private String time;
+
+	private Paint paint;
+	private Paint paint2;
+	private Paint paint3;
+	private Paint paint4;
+	private Paint paint5;
+	private long startTime;
+	private boolean paused = false;
+	private boolean newGame;
+
+	int timeLeft;
+	private boolean gameOver;
+
+	public GameScreen(Game game) {
+		super(game);
+
+		newGame = true;
+		state = GameState.Ready;
+		timeLeft = 30;
+
+		world = new GameWorld();
+		renderer = new GameRenderer(world);
+
+		ducks = new ArrayList<Duck>();
+		duckCharacters = new ArrayList<Image>();
+		random = new Random();
+
+		int speedX = random.nextInt(5) + 3;
+		int speedY = random.nextInt(5) + 3;
+		int startAX = random.nextInt(440) + 1;
+		int startAY = random.nextInt(780) + 35;
+		int startBX = random.nextInt(440) + 1;
+		int startBY = random.nextInt(780) + 35;
+
+		Speed s1 = new Speed(speedX, speedY);
+		Speed s2 = new Speed(speedX, speedY);
+
+		Image duckImg1 = Assets.duckLeft;
+		Image duckImg2 = Assets.duckLeft;
+
+		Duck duck1 = new Duck(duckImg1, startAX, startAY, s1);
+		Duck duck2 = new Duck(duckImg2, startBX, startBY, s2);
+
+		pondImage = Assets.pond;
+		pond = new Pond(pondImage, 150, 150);
+
+		ducks.add(duck1);
+		ducks.add(duck2);
+
+		for (Duck duck : ducks) {
+			duckCharacters.add(Assets.duckLeft);
+		}
+
+		// Defining a paint object
+		paint = new Paint();
+		paint.setTextSize(30);
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setAntiAlias(true);
+		paint.setColor(Color.WHITE);
+
+		paint2 = new Paint();
+		paint2.setTextSize(50);
+		paint2.setTextAlign(Paint.Align.CENTER);
+		paint2.setAntiAlias(true);
+		paint2.setColor(Color.WHITE);
+
+		paint3 = new Paint();
+		paint3.setTextSize(30);
+		paint3.setTextAlign(Paint.Align.CENTER);
+		paint3.setAntiAlias(true);
+		paint3.setColor(Color.YELLOW);
+		
+		paint4 = new Paint();
+		paint4.setTextSize(15);
+		paint4.setTextAlign(Paint.Align.LEFT);
+		paint4.setAntiAlias(true);
+		paint4.setColor(Color.YELLOW);
+		
+		paint5 = new Paint();
+		paint5.setTextSize(15);
+		paint5.setTextAlign(Paint.Align.CENTER);
+		paint5.setAntiAlias(true);
+		paint5.setColor(Color.YELLOW);	
+	}
+<<<<<<< HEAD
+	
+	private void countDown()
+	{
+=======
+
+	private void countDown() {
+>>>>>>> a3df46f443b0a467f5c21eb7e189d1b529b59cc9
+		if (!paused)
+			timeLeft -= 1;
+	}
+
+	@Override
+	public void update(float deltaTime) {
+		world.update(deltaTime);
+		renderer.render();
+
+		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+
+		if (state == GameState.Ready)
+			updateReady(touchEvents);
+		if (state == GameState.Running)
+			updateRunning(touchEvents, deltaTime);
+		if (state == GameState.Paused)
+			updatePaused(touchEvents);
+		if (state == GameState.GameOver)
+			updateGameOver(touchEvents);
+	}
+
+	@Override
+	public void paint(float deltaTime) {
+		if (gameOver)
+		{
+			return;
+		}
+		
+		Graphics g = game.getGraphics();
+
+		// Draw background
+		g.drawImage(Assets.grass, 0, 0);
+		
+		// draw pond
+		g.drawImage(pond.getImage(),  pond.getX(),  pond.getY());
+
+		// Draw ducks
+		for (Duck duck : ducks) {
+			g.drawImage(duck.getImage(), duck.getX(), duck.getY());
+<<<<<<< HEAD
+		}	
+		
+		// Draw timer, level, score, high score
+		g.drawRect(0, 0, 480, 35, Color.argb(155, 0, 0, 0));
+		g.drawString(Integer.toString(timeLeft), 240, 27, paint3);
+		
+		if (timeLeft < 0)
+		{
+=======
+		}
+
+		// draw pond
+		g.drawImage(pond.getImage(), pond.getX(), pond.getY());
+
+			g.drawRect(0, 0, 480, 35, Color.argb(155, 0, 0, 0));
+			g.drawString(Integer.toString(timeLeft), 240, 27, paint3);
+
+		if (timeLeft < 0) {
+>>>>>>> a3df46f443b0a467f5c21eb7e189d1b529b59cc9
+			paused = true;
+			state = GameState.GameOver;
+		}
+
+		// update UI
+		if (state == GameState.Ready)
+			drawReadyUI();
+		if (state == GameState.Running)
+			drawRunningUI();
+		if (state == GameState.Paused)
+			drawPausedUI();
+		if (state == GameState.GameOver)
+			drawGameOverUI();
+	}
+
+	private void updateReady(List<TouchEvent> touchEvents) {
+
+		if (newGame) {
+			touchEvents.clear();
+			newGame = false;
+		}
+
+		if (touchEvents.size() > 0) {
+			state = GameState.Running;
+			Timer timer = new Timer("Countdown");
+			timer.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+					countDown();
+				}
+			}, 0, 1000);
+		}
+	}
+
+	/**
+	 * @param touchEvents
+	 * @param deltaTime
+	 */
+	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
+
+		// This is identical to the update() method from our Unit 2/3 game.
+
+		// 1. All touch input is handled here:
+		int len = touchEvents.size();
+		for (int i = 0; i < len; i++) {
+			TouchEvent event = touchEvents.get(i);
+			if (event.type == TouchEvent.TOUCH_DOWN) {
+				for (Duck duck : ducks)
+				{
+					duck.checkTouch(event.x, event.y);
+				}
+			}
+				
+			if (event.type == TouchEvent.TOUCH_DRAGGED)
+			{
+				
+				Log.d(TAG, "Coords: x= " + event.x + "  y= " + event.y);
+				for (Duck duck : ducks)
+				{
+					if (duck.isTouched())
+					{
+						duck.setX(event.x);
+						duck.setY(event.y);
+						
+						
+					}
+				}
+			}
+			
+			if (event.type == TouchEvent.TOUCH_UP) {
+				Log.d(TAG, "Touch stopped");
+				
+				for (Duck duck : ducks)
+				{
+					if (duck.isTouched())
+					{
+						
+						duck.setTouched(false);
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < ducks.size(); i++) {
+			Duck duck = ducks.get(i);
+			duck.update();
+			duck.checkScreenCollision(480, 800);
+			for (int j = i; j < ducks.size(); j++) {
+				if (i != j) {
+					Duck otherDuck = ducks.get(j);
+					if (duck.isColliding(otherDuck)) {
+						duck.bounceOff(otherDuck);
+					}
+				}
+			}
+		}
+	}
+
+	private boolean inBounds(TouchEvent event, int x, int y, int width,
+			int height) {
+		if (event.x > x && event.x < x + width - 1 && event.y > y
+				&& event.y < y + height - 1)
+			return true;
+		else
+			return false;
+	}
+
+	private void updatePaused(List<TouchEvent> touchEvents) {
+		int len = touchEvents.size();
+		for (int i = 0; i < len; i++) {
+			TouchEvent event = touchEvents.get(i);
+			if (event.type == TouchEvent.TOUCH_UP) {
+				if (inBounds(event, 0, 0, 800, 240)) {
+
+					if (!inBounds(event, 0, 0, 35, 35)) {
+						resume();
+					}
+				}
+
+				if (inBounds(event, 0, 240, 800, 240)) {
+					nullify();
+					goToMenu();
+				}
+			}
+		}
+	}
+
+	private void updateGameOver(List<TouchEvent> touchEvents) {
+		int len = touchEvents.size();
+		for (int i = 0; i < len; i++) {
+			TouchEvent event = touchEvents.get(i);
+			if (event.type == TouchEvent.TOUCH_DOWN) {
+				if (inBounds(event, 0, 0, 800, 480)) {
+					nullify();
+					// game.setScreen(new MainMenuScreen(game));
+				}
+				game.setScreen(new GameScreen(game));
+				return;
+			}
+		}
+
+	}
+
+	private void nullify() {
+
+		// Set all variables to null. You will be recreating them in the
+		// constructor.
+		paint = null;
+		paint2 = null;
+		paint3 = null;
+		ducks = null;
+		duckCharacters = null;
+		random = null;
+		pond = null;
+
+		// Call garbage collector to clean up memory.
+		System.gc();
+		
+		gameOver = true;
+
+	}
+
+	private void drawReadyUI() {
+		Graphics g = game.getGraphics();
+
+		g.drawARGB(155, 0, 0, 0);
+		g.drawString("Tap to Start.", 240, 400, paint);
+	}
+
+	private void drawRunningUI() {
+		Graphics g = game.getGraphics();
+	}
+
+	private void drawPausedUI() {
+		org.yess.framework.Graphics g = game.getGraphics();
+		// Darken the entire screen so you can display the Paused screen.
+		g.drawARGB(155, 0, 0, 0);
+		g.drawString("Resume", 240, 200, paint2);
+		g.drawString("Menu", 240, 360, paint2);
+
+	}
+
+	private void drawGameOverUI() {
+		Graphics g = game.getGraphics();
+		g.drawRect(0, 0, 1281, 801, Color.BLACK);
+		g.drawString("GAME OVER.", 240, 240, paint2);
+		g.drawString("Tap to return.", 240, 290, paint);
+
+	}
+
+	@Override
+	public void pause() {
+		if (state == GameState.Running) {
+			state = GameState.Paused;
+			paused = true;
+		}
+	}
+
+	@Override
+	public void resume() {
+		if (state == GameState.Paused) {
+			state = GameState.Running;
+			paused = false;
+		}
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void backButton() {
+<<<<<<< HEAD
+		//pause();
+		game.quit();
+	}
+
+	private void goToMenu() {
+		// TODO Auto-generated method stub
+		// game.setScreen(new MainMenuScreen(game));
+=======
+		if (!paused) {
+			pause();
+		} else {
+			goToMenu();
+		}
+	}
+
+	private void goToMenu() {
+>>>>>>> a3df46f443b0a467f5c21eb7e189d1b529b59cc9
+		game.quit();
+	}
+
+}
