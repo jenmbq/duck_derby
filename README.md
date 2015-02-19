@@ -1,7 +1,7 @@
 #YESS Duck Derby   
 ### #TeamDuck Contact Information
 
-This game can be loaded up by going to: http://jenmarks-wf.github.io/duck_derby/src/index.html
+This game can be loaded up by going to: http://yessiowa.github.io/duck_derby/src/index.html
 
 Tyler Bell   
 bell.tyler@me.com   
